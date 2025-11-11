@@ -10,7 +10,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 public class Main extends JavaPlugin {
 
-	public Economy eco;
+	public static Economy eco;
 	public static Main plugin;
 
     private BukkitRunnable currentEvent;

@@ -8,6 +8,7 @@ import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.scheduler.BukkitRunnable;
+import org.checkerframework.checker.units.qual.A;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -34,15 +35,34 @@ public class UnscrambleEvent extends BukkitRunnable implements Listener {
     @Override
     public void run() {
 
-        ArrayList<Character> phraseList = new ArrayList<>();
-        for (char c : phrase.toCharArray()) phraseList.add(c);
 
-        Collections.shuffle(phraseList);
+
+        Bukkit.broadcastMessage("Unscramble the following phrase to win a prize: " + scramble("SPIGOTMC", true));
+
+    }
+
+    private String scramble(String word, boolean easyMode) {
+        ArrayList<Character> phraseList = new ArrayList<>();
+        for (char c : word.toCharArray()) phraseList.add(c);
+
+        ArrayList<Character> scrambledList;
+        if (!easyMode) {
+            Collections.shuffle(phraseList);
+            scrambledList = phraseList;
+        } else {
+            scrambledList = new ArrayList<>();
+            scrambledList.add(phraseList.get(0));
+            scrambledList.add(phraseList.get(phraseList.size() - 1));
+            phraseList.remove(0);
+            phraseList.remove(phraseList.size()-1);
+            Collections.shuffle(phraseList);
+            for (char c : phraseList) scrambledList.add(1, c);
+
+        }
 
         StringBuilder scrambled = new StringBuilder();
-        for (char c : phraseList) scrambled.append(c);
+        for (char c : scrambledList) scrambled.append(c);
 
-        Bukkit.broadcastMessage("Unscramble the following phrase to win a prize: " + scrambled);
-
+        return scrambled.toString();
     }
 }
