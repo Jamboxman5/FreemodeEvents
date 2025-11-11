@@ -1,17 +1,23 @@
-package net.jahcraft.freemodeevents.chat;
+package net.jahcraft.freemodeevents.main;
 
-import net.jahcraft.freemodeevents.main.Main;
 import net.jahcraft.freemodeevents.util.EventUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.scheduler.BukkitRunnable;
 
-public class ChatEventController extends BukkitRunnable {
+public class EventController extends BukkitRunnable {
 
     private boolean stopReceived = false;
 
+    private int interval;
+
+    public EventController (int interval) {
+        //Interval in seconds
+        this.interval = interval;
+    }
+
     @Override
     public void run() {
-        Bukkit.getLogger().info("Chat Event Controller running!");
+        Bukkit.getLogger().info("Event Controller running!");
 
         while (!stopReceived) {
             if (Main.plugin.canRunEvent()) {
@@ -20,7 +26,7 @@ public class ChatEventController extends BukkitRunnable {
 
             } else {
                 try {
-                    Thread.sleep(1000 * 60 * 15);
+                    Thread.sleep(1000L * interval);
                 } catch (InterruptedException e) {
                     stopReceived = true;
                 }

@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" build-on-make="true" name="FreemodeEvents:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/FreemodeEvents_jar</output-path>
+    <root id="archive" name="FreemodeEvents.jar">
+      <element id="module-output" name="FreemodeEvents" />
+    </root>
+  </artifact>
+</component>

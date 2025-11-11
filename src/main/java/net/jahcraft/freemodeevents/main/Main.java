@@ -13,6 +13,9 @@ public class Main extends JavaPlugin {
 	public static Main plugin;
 
     private BukkitRunnable currentEvent;
+
+    private final int eventInterval = 60;
+    private EventController controller;
 	
 	@Override
 	public void onEnable() {
@@ -26,12 +29,22 @@ public class Main extends JavaPlugin {
 		}
 
         plugin = this;
+
+        controller = new EventController(eventInterval);
+        controller.runTaskAsynchronously(this);
+
 		
 	}
 	
 	@Override
 	public void onDisable() {
-		
+
+        controller.stop();
+        controller.cancel();
+
+		if (currentEvent != null) {
+            currentEvent.cancel();
+        }
 	}
 	
 	private boolean setupEconomy() {
@@ -57,5 +70,8 @@ public class Main extends JavaPlugin {
         currentEvent = event;
         currentEvent.runTaskAsynchronously(this);
     }
-	
+
+    public void finishEvent(BukkitRunnable event) {
+        if (currentEvent == event) currentEvent = null;
+    }
 }
