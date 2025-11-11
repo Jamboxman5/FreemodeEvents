@@ -1,5 +1,6 @@
 package net.jahcraft.freemodeevents.main;
 
+import net.jahcraft.freemodeevents.chat.UnscrambleEvent;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -74,4 +75,10 @@ public class Main extends JavaPlugin {
     public void finishEvent(BukkitRunnable event) {
         if (currentEvent == event) currentEvent = null;
     }
+
+    public boolean isRunningEvent(BukkitRunnable event) {
+        return (currentEvent==event);
+    }
+
+    public BukkitRunnable getRunningEvent() { return currentEvent; }
 }

@@ -1,5 +1,6 @@
 package net.jahcraft.freemodeevents.main;
 
+import net.jahcraft.freemodeevents.chat.UnscrambleEvent;
 import net.jahcraft.freemodeevents.util.EventUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -22,7 +23,7 @@ public class EventController extends BukkitRunnable {
         while (!stopReceived) {
             if (Main.plugin.canRunEvent()) {
 
-                Main.plugin.runEvent(getRandomChatEvent());
+                Main.plugin.runEvent(new UnscrambleEvent("SpigotMC"));
 
             } else {
                 try {
