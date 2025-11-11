@@ -5,11 +5,14 @@ import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import net.milkbowl.vault.economy.Economy;
+import org.bukkit.scheduler.BukkitRunnable;
 
 public class Main extends JavaPlugin {
 
 	public Economy eco;
 	public static Main plugin;
+
+    private BukkitRunnable currentEvent;
 	
 	@Override
 	public void onEnable() {
@@ -21,6 +24,8 @@ public class Main extends JavaPlugin {
 			return;
 			
 		}
+
+        plugin = this;
 		
 	}
 	
@@ -39,5 +44,18 @@ public class Main extends JavaPlugin {
 		return (eco != null);
 		
 	}
+
+    public boolean canRunEvent() {
+        return (currentEvent == null);
+    }
+
+    public void runEvent(BukkitRunnable event) {
+        if (!canRunEvent()) {
+            Bukkit.getLogger().warning("Tried to run event while event running!");
+            return;
+        }
+        currentEvent = event;
+        currentEvent.runTaskAsynchronously(this);
+    }
 	
 }
