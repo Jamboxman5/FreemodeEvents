@@ -55,8 +55,11 @@ public class Main extends JavaPlugin {
         controller.cancel();
 
 		if (currentEvent != null) {
+            finishEvent(currentEvent);
             currentEvent.cancel();
+            currentEvent = null;
         }
+
 	}
 	
 	private boolean setupEconomy() {

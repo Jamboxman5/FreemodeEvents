@@ -27,7 +27,7 @@ public class EventController extends BukkitRunnable {
         while (!stopReceived) {
             if (Main.plugin.canRunEvent()) {
 
-                Main.plugin.runEvent(new UnscrambleEvent());
+                Main.plugin.runEvent(new RampageEvent());
 
             } else {
                 try {
