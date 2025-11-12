@@ -82,6 +82,7 @@ public class Main extends JavaPlugin {
             Bukkit.getLogger().warning("Tried to run event while event running!");
             return;
         }
+        getServer().getPluginManager().registerEvents(event, this);
         currentEvent = event;
         currentEvent.runTaskAsynchronously(this);
     }

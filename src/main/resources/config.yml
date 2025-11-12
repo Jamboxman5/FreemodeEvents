@@ -43,5 +43,10 @@ unscramble-phrases:
 
 ####################################################################################################################
 
+#
+# Challenge Event Configuration
+#
 
+# Rampage time limit in seconds.
+rampage-timer: 180
 

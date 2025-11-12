@@ -29,7 +29,6 @@ public class UnscrambleEvent extends FreemodeEvent {
             double hardChance = Main.config.getConfig().getDouble("unscramble-difficulty-chance");
             easyMode = (Math.random() > hardChance);
         }
-        Main.plugin.getServer().getPluginManager().registerEvents(this, Main.plugin);
     }
 
     public UnscrambleEvent(String phrase, int timeLimit, boolean easyMode) {

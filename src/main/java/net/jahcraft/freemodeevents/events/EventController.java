@@ -1,10 +1,13 @@
 package net.jahcraft.freemodeevents.events;
 
+import net.jahcraft.freemodeevents.events.challenges.RampageEvent;
 import net.jahcraft.freemodeevents.events.chat.UnscrambleEvent;
 import net.jahcraft.freemodeevents.main.Main;
 import net.jahcraft.freemodeevents.util.EventUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.scheduler.BukkitRunnable;
+
+import java.util.ArrayList;
 
 public class EventController extends BukkitRunnable {
 
@@ -39,8 +42,16 @@ public class EventController extends BukkitRunnable {
 
     public void stop() { stopReceived = true; }
 
-    private BukkitRunnable getRandomChatEvent() {
-        return EventUtil.getGenericEvent();
+    private BukkitRunnable getRandomEvent() {
+        int i = (int) (Math.random() * 2);
+        switch(i) {
+            case 0:
+                return new UnscrambleEvent();
+            case 1:
+                return new RampageEvent();
+            default:
+                return EventUtil.getGenericEvent();
+        }
     }
 
 }
