@@ -77,7 +77,7 @@ public class Main extends JavaPlugin {
 //        Bukkit.getLogger().info("Event running? " + (currentEvent != null));
 //        Bukkit.getLogger().info("Cooldown? " + eventCooldown + "s");
 //        Bukkit.getLogger().info("Cooldown passed? " + ((System.currentTimeMillis() - lastEventEnd)/1000) + "s");
-        return (currentEvent == null && (System.currentTimeMillis() - lastEventEnd >= (eventCooldown * 1000)));
+        return (currentEvent == null && !Bukkit.getOnlinePlayers().isEmpty() && (System.currentTimeMillis() - lastEventEnd >= (eventCooldown * 1000)));
     }
 
     public void runEvent(FreemodeEvent event) {
