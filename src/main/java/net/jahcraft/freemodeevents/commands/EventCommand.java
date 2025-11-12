@@ -18,6 +18,7 @@ public class EventCommand implements CommandExecutor {
             if (sender.hasPermission("freemodeevents.admin")) {
                 sender.sendMessage(ChatColor.RED + "/event trigger");
                 sender.sendMessage(ChatColor.RED + "/event cancel");
+                sender.sendMessage(ChatColor.RED + "/event reload");
             }
             return true;
         }
@@ -59,6 +60,11 @@ public class EventCommand implements CommandExecutor {
                 return true;
             }
             sender.sendMessage("The next event will begin in ~" + Main.plugin.getEventCooldown() + " seconds");
+        }
+        else if (args[0].equalsIgnoreCase("reload")) {
+            Main.config.reloadConfig();
+            Main.plugin.loadConfiguration();
+            sender.sendMessage("FreemodeEvents configuration reloaded!");
         }
 
         return true;

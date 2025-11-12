@@ -1,6 +1,7 @@
 package net.jahcraft.freemodeevents.main;
 
 import net.jahcraft.freemodeevents.commands.EventCommand;
+import net.jahcraft.freemodeevents.config.DataManager;
 import net.jahcraft.freemodeevents.events.EventController;
 import net.jahcraft.freemodeevents.events.FreemodeEvent;
 import org.bukkit.Bukkit;
@@ -15,10 +16,11 @@ public class Main extends JavaPlugin {
 
 	public static Economy eco;
 	public static Main plugin;
+    public static DataManager config;
 
     private FreemodeEvent currentEvent;
 
-    private final int eventCooldown = 60;
+    private int eventCooldown;
     private EventController controller;
 
     private long lastEventEnd = 0;
@@ -35,10 +37,12 @@ public class Main extends JavaPlugin {
 		}
 
         plugin = this;
+        config = new DataManager();
+        loadConfiguration();
 
         getCommand("event").setExecutor(new EventCommand());
 
-        controller = new EventController(eventCooldown);
+        controller = new EventController(1);
         controller.runTaskAsynchronously(this);
 
 		
@@ -67,6 +71,9 @@ public class Main extends JavaPlugin {
 	}
 
     public boolean canRunEvent() {
+//        Bukkit.getLogger().info("Event running? " + (currentEvent != null));
+//        Bukkit.getLogger().info("Cooldown? " + eventCooldown + "s");
+//        Bukkit.getLogger().info("Cooldown passed? " + ((System.currentTimeMillis() - lastEventEnd)/1000) + "s");
         return (currentEvent == null && (System.currentTimeMillis() - lastEventEnd >= (eventCooldown * 1000)));
     }
 
@@ -102,4 +109,8 @@ public class Main extends JavaPlugin {
     }
 
     public FreemodeEvent getRunningEvent() { return currentEvent; }
+
+    public void loadConfiguration() {
+        eventCooldown = config.getConfig().getInt("event-cooldown");
+    }
 }

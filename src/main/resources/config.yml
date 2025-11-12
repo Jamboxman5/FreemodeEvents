@@ -1,0 +1,47 @@
+####################################################################################################################
+#
+#   FreemodeEvents configuration
+#   Plugin by Jamboxman5
+#
+####################################################################################################################
+
+#
+# Global Configuration
+#
+
+# Cooldown between events in seconds.
+event-cooldown: 60
+
+####################################################################################################################
+
+#
+# Chat Event Configuration
+#
+
+# Unscramble time limit in seconds.
+unscramble-timer: 15
+
+# Unscramble difficulty (0 - Easy, 1 - Hard, 2 - Random)
+# Easy mode retains the first and last character, and only randomizes those between.
+unscramble-difficulty: 0
+
+# Unscramble difficulty randomizer (Between 0.0 - 1.0)
+# Percent chance of an event using hard mode. 0.5 means there's a 50% chance of the event using hard mode.
+unscramble-difficulty-chance: 0.5
+
+# Unscramble event phrases.
+unscramble-phrases:
+  - SpigotMC
+  - Jamboxman5
+  - SlickNick73
+  - Tombo870
+  - Minecraft
+  - JahCraft
+  - TownyPlus
+  - WesternHunting
+  - WesternBounties
+
+####################################################################################################################
+
+
+

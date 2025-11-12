@@ -24,7 +24,7 @@ public class EventController extends BukkitRunnable {
         while (!stopReceived) {
             if (Main.plugin.canRunEvent()) {
 
-                Main.plugin.runEvent(new UnscrambleEvent("SpigotMC", 10));
+                Main.plugin.runEvent(new UnscrambleEvent());
 
             } else {
                 try {
