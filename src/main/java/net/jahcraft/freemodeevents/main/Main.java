@@ -16,8 +16,10 @@ public class Main extends JavaPlugin {
 
     private FreemodeEvent currentEvent;
 
-    private final int eventInterval = 60;
+    private final int eventCooldown = 60;
     private EventController controller;
+
+    private long lastEventEnd = 0;
 	
 	@Override
 	public void onEnable() {
@@ -32,7 +34,7 @@ public class Main extends JavaPlugin {
 
         plugin = this;
 
-        controller = new EventController(eventInterval);
+        controller = new EventController(eventCooldown);
         controller.runTaskAsynchronously(this);
 
 		
@@ -61,7 +63,7 @@ public class Main extends JavaPlugin {
 	}
 
     public boolean canRunEvent() {
-        return (currentEvent == null);
+        return (currentEvent == null && (System.currentTimeMillis() - lastEventEnd >= (eventCooldown * 1000)));
     }
 
     public void runEvent(FreemodeEvent event) {
@@ -74,7 +76,10 @@ public class Main extends JavaPlugin {
     }
 
     public void finishEvent(FreemodeEvent event) {
-        if (currentEvent == event) currentEvent = null;
+        if (currentEvent == event) {
+            currentEvent = null;
+            lastEventEnd = System.currentTimeMillis();
+        }
         HandlerList.unregisterAll(event);
 
     }

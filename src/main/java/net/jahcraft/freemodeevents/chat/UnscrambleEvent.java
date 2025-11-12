@@ -75,6 +75,6 @@ public class UnscrambleEvent extends FreemodeEvent {
         StringBuilder scrambled = new StringBuilder();
         for (char c : scrambledList) scrambled.append(c);
 
-        return scrambled.toString();
+        return scrambled.toString().toUpperCase();
     }
 }

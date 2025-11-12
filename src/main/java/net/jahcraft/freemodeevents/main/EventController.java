@@ -9,11 +9,11 @@ public class EventController extends BukkitRunnable {
 
     private boolean stopReceived = false;
 
-    private int interval;
+    private int checkInterval;
 
-    public EventController (int interval) {
-        //Interval in seconds
-        this.interval = interval;
+    public EventController (int checkInterval) {
+        //Interval in seconds to check for events
+        this.checkInterval = checkInterval;
     }
 
     @Override
@@ -27,7 +27,7 @@ public class EventController extends BukkitRunnable {
 
             } else {
                 try {
-                    Thread.sleep(1000L * interval);
+                    Thread.sleep(1000L * checkInterval);
                 } catch (InterruptedException e) {
                     stopReceived = true;
                 }
