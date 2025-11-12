@@ -18,6 +18,12 @@ event-cooldown: 60
 # Chat Event Configuration
 #
 
+### Unscramble Configuration
+
+# Unscramble selection weight.
+# Larger number -> Higher likelihood of selection when starting an event.
+unscramble-weight: 1
+
 # Unscramble time limit in seconds.
 unscramble-timer: 15
 
@@ -47,6 +53,30 @@ unscramble-phrases:
 # Challenge Event Configuration
 #
 
+### Rampage Configuration
+
+# Rampage selection weight.
+# Larger number -> Higher likelihood of selection when starting an event.
+rampage-weight: 1
+
 # Rampage time limit in seconds.
 rampage-timer: 180
+
+# Number of kills required to complete the rampage
+# Set to -1 to remove the limit and award highest kill count
+rampage-target: -1
+
+# Mob types which will count toward progression when killed for rampage events.
+# Acceptable values can be found here: https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/entity/EntityType.html
+# Must be a valid mob; no armor stands or effect clouds.
+rampage-mobs:
+  - ZOMBIE
+  - SKELETON
+  - SPIDER
+  - HUSK
+  - STRAY
+  - ENDERMAN
+  - CAVE_SPIDER
+  - BLAZE
+  - SLIME
 
