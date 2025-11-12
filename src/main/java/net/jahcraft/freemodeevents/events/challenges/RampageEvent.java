@@ -4,25 +4,32 @@ import net.jahcraft.freemodeevents.events.FreemodeEvent;
 import net.jahcraft.freemodeevents.main.Main;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Mob;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 public class RampageEvent extends FreemodeEvent {
 
     private final int timeLimit;
+    private final int targetKills;
+    private final List<EntityType> acceptableMobs;
 
     private final HashMap<Player, Integer> kills;
 
     public RampageEvent() {
-        this(Main.config.getConfig().getInt("rampage-timer"));
+        this(Main.config.getConfig().getInt("rampage-timer"), getMobsFromConfig(), Main.config.getConfig().getInt("rampage-target"));
     }
 
-    public RampageEvent(int timeLimit) {
+    public RampageEvent(int timeLimit, List<EntityType> acceptableMobs, int targetKills) {
         this.timeLimit = timeLimit;
+        this.acceptableMobs = acceptableMobs;
+        this.targetKills = targetKills;
         kills = new HashMap<>();
     }
 
@@ -32,11 +39,20 @@ public class RampageEvent extends FreemodeEvent {
         if (!event.getEntity().isDead()) return;
         if (!(event.getEntity() instanceof Player)) return;
         if (!(event.getEntity() instanceof Mob)) return;
+        if (!acceptableMobs.contains(event.getEntity().getType())) return;
+        if (event.isCancelled()) return;
 
         Player player = (Player) event.getDamager();
 
         if (!kills.containsKey(player)) kills.put(player, 1);
         else kills.put(player, kills.get(player) + 1);
+
+        if (targetKills <= 0) return;
+
+        if (kills.get(player) < targetKills) return;
+
+        Bukkit.broadcastMessage(player.getDisplayName() + " was the first to reach " + targetKills + " kills!");
+        Main.plugin.finishEvent(this);
 
     }
 
@@ -67,7 +83,18 @@ public class RampageEvent extends FreemodeEvent {
             throw new RuntimeException(e);
         }
 
-        Main.plugin.finishEvent(this);
+    }
 
+    private static List<EntityType> getMobsFromConfig() {
+        List<String> configMobs = Main.config.getConfig().getStringList("rampage-mobs");
+        List<EntityType> mobs = new ArrayList<>();
+        for (String s : configMobs) {
+            try {
+                mobs.add(EntityType.valueOf(s));
+            } catch (IllegalArgumentException e) {
+                Bukkit.getLogger().warning("Invalid rampage mob! Fix configuration file!");
+            }
+        }
+        return mobs;
     }
 }
