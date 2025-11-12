@@ -1,8 +1,10 @@
 package net.jahcraft.freemodeevents.main;
 
+import net.jahcraft.freemodeevents.commands.EventCommand;
 import net.jahcraft.freemodeevents.events.EventController;
 import net.jahcraft.freemodeevents.events.FreemodeEvent;
 import org.bukkit.Bukkit;
+import org.bukkit.command.CommandExecutor;
 import org.bukkit.event.HandlerList;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -33,6 +35,8 @@ public class Main extends JavaPlugin {
 		}
 
         plugin = this;
+
+        getCommand("event").setExecutor(new EventCommand());
 
         controller = new EventController(eventCooldown);
         controller.runTaskAsynchronously(this);
@@ -86,6 +90,15 @@ public class Main extends JavaPlugin {
 
     public boolean isRunningEvent(FreemodeEvent event) {
         return (currentEvent==event);
+    }
+
+    public boolean isRunningEvent() {
+        return (currentEvent!=null);
+    }
+
+    public int getEventCooldown() {
+        if (isRunningEvent()) return -1;
+        return Math.toIntExact(eventCooldown - ((System.currentTimeMillis() - lastEventEnd) / 1000));
     }
 
     public FreemodeEvent getRunningEvent() { return currentEvent; }
