@@ -1,4 +1,4 @@
-package net.jahcraft.freemodeevents.main;
+package net.jahcraft.freemodeevents.events;
 
 import org.bukkit.event.Listener;
 import org.bukkit.scheduler.BukkitRunnable;

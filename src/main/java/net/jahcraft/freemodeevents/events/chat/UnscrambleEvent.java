@@ -1,18 +1,13 @@
-package net.jahcraft.freemodeevents.chat;
+package net.jahcraft.freemodeevents.events.chat;
 
-import net.jahcraft.freemodeevents.main.FreemodeEvent;
+import net.jahcraft.freemodeevents.events.FreemodeEvent;
 import net.jahcraft.freemodeevents.main.Main;
 import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
-import org.bukkit.event.HandlerList;
-import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
-import org.bukkit.scheduler.BukkitRunnable;
-import org.checkerframework.checker.units.qual.A;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 
 public class UnscrambleEvent extends FreemodeEvent {

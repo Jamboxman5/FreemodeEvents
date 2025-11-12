@@ -1,6 +1,7 @@
-package net.jahcraft.freemodeevents.main;
+package net.jahcraft.freemodeevents.events;
 
-import net.jahcraft.freemodeevents.chat.UnscrambleEvent;
+import net.jahcraft.freemodeevents.events.chat.UnscrambleEvent;
+import net.jahcraft.freemodeevents.main.Main;
 import net.jahcraft.freemodeevents.util.EventUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.scheduler.BukkitRunnable;

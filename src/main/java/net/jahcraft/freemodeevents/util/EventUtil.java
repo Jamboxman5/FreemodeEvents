@@ -1,9 +1,8 @@
 package net.jahcraft.freemodeevents.util;
 
-import net.jahcraft.freemodeevents.main.FreemodeEvent;
+import net.jahcraft.freemodeevents.events.FreemodeEvent;
 import net.jahcraft.freemodeevents.main.Main;
 import org.bukkit.Bukkit;
-import org.bukkit.scheduler.BukkitRunnable;
 
 public class EventUtil {
 

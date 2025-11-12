@@ -1,13 +1,13 @@
 package net.jahcraft.freemodeevents.main;
 
-import net.jahcraft.freemodeevents.chat.UnscrambleEvent;
+import net.jahcraft.freemodeevents.events.EventController;
+import net.jahcraft.freemodeevents.events.FreemodeEvent;
 import org.bukkit.Bukkit;
 import org.bukkit.event.HandlerList;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import net.milkbowl.vault.economy.Economy;
-import org.bukkit.scheduler.BukkitRunnable;
 
 public class Main extends JavaPlugin {
 
