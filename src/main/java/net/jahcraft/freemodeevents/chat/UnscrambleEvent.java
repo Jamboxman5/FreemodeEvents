@@ -1,5 +1,6 @@
 package net.jahcraft.freemodeevents.chat;
 
+import net.jahcraft.freemodeevents.main.FreemodeEvent;
 import net.jahcraft.freemodeevents.main.Main;
 import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
@@ -14,12 +15,15 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 
-public class UnscrambleEvent extends BukkitRunnable implements Listener {
+public class UnscrambleEvent extends FreemodeEvent {
 
     private String phrase;
+    private int timeLimit;
 
-    public UnscrambleEvent(String phrase) {
+    public UnscrambleEvent(String phrase, int timeLimit) {
         this.phrase = phrase;
+        this.timeLimit = timeLimit;
+
         Main.plugin.getServer().getPluginManager().registerEvents(this, Main.plugin);
     }
 
@@ -29,15 +33,23 @@ public class UnscrambleEvent extends BukkitRunnable implements Listener {
         if (event.getMessage().equalsIgnoreCase(phrase)) event.setCancelled(true);
         Bukkit.broadcastMessage(event.getPlayer().getDisplayName() + " has unscrambled the phrase! (" + phrase + ")");
         Main.plugin.finishEvent(this);
-        HandlerList.unregisterAll(this);
     }
 
     @Override
     public void run() {
 
 
+        try {
+            Bukkit.broadcastMessage("Unscramble the following phrase to win a prize: " + scramble(phrase, true));
+            Thread.sleep(1000 * timeLimit);
+            if (Main.plugin.isRunningEvent(this)) {
+                Bukkit.broadcastMessage("Nobody unscrambled the phrase in time! (" + phrase + ") Try again next time! ");
+                Main.plugin.finishEvent(this);
+            }
 
-        Bukkit.broadcastMessage("Unscramble the following phrase to win a prize: " + scramble("SPIGOTMC", true));
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
 
     }
 

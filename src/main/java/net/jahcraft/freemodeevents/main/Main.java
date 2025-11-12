@@ -2,6 +2,7 @@ package net.jahcraft.freemodeevents.main;
 
 import net.jahcraft.freemodeevents.chat.UnscrambleEvent;
 import org.bukkit.Bukkit;
+import org.bukkit.event.HandlerList;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -13,7 +14,7 @@ public class Main extends JavaPlugin {
 	public static Economy eco;
 	public static Main plugin;
 
-    private BukkitRunnable currentEvent;
+    private FreemodeEvent currentEvent;
 
     private final int eventInterval = 60;
     private EventController controller;
@@ -63,7 +64,7 @@ public class Main extends JavaPlugin {
         return (currentEvent == null);
     }
 
-    public void runEvent(BukkitRunnable event) {
+    public void runEvent(FreemodeEvent event) {
         if (!canRunEvent()) {
             Bukkit.getLogger().warning("Tried to run event while event running!");
             return;
@@ -72,13 +73,15 @@ public class Main extends JavaPlugin {
         currentEvent.runTaskAsynchronously(this);
     }
 
-    public void finishEvent(BukkitRunnable event) {
+    public void finishEvent(FreemodeEvent event) {
         if (currentEvent == event) currentEvent = null;
+        HandlerList.unregisterAll(event);
+
     }
 
-    public boolean isRunningEvent(BukkitRunnable event) {
+    public boolean isRunningEvent(FreemodeEvent event) {
         return (currentEvent==event);
     }
 
-    public BukkitRunnable getRunningEvent() { return currentEvent; }
+    public FreemodeEvent getRunningEvent() { return currentEvent; }
 }
