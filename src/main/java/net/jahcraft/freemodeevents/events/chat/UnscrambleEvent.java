@@ -3,6 +3,7 @@ package net.jahcraft.freemodeevents.events.chat;
 import net.jahcraft.freemodeevents.events.FreemodeEvent;
 import net.jahcraft.freemodeevents.main.Main;
 import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
@@ -16,6 +17,8 @@ public class UnscrambleEvent extends FreemodeEvent {
     private final String phrase;
     private final int timeLimit;
     private final boolean easyMode;
+
+    private Player winner = null;
 
     public UnscrambleEvent() {
         List<String> phrases = Main.config.getConfig().getStringList("unscramble-phrases");
@@ -43,20 +46,21 @@ public class UnscrambleEvent extends FreemodeEvent {
     public void onChat(AsyncPlayerChatEvent event) {
         if (!Main.plugin.isRunningEvent(this)) return;
         if (event.getMessage().equalsIgnoreCase(phrase)) event.setCancelled(true);
-        Bukkit.broadcastMessage(event.getPlayer().getDisplayName() + " has unscrambled the phrase! (" + phrase + ")");
-        Main.plugin.finishEvent(this);
+
+        winner = event.getPlayer();
+
+        finish();
+
     }
 
     @Override
     public void run() {
 
-
         try {
             Bukkit.broadcastMessage("Unscramble the following phrase to win a prize: " + scramble(phrase));
             Thread.sleep(1000L * timeLimit);
             if (Main.plugin.isRunningEvent(this)) {
-                Bukkit.broadcastMessage("Nobody unscrambled the phrase in time! (" + phrase + ") Try again next time! ");
-                Main.plugin.finishEvent(this);
+                finish();
             }
 
         } catch (InterruptedException e) {
@@ -88,5 +92,17 @@ public class UnscrambleEvent extends FreemodeEvent {
         for (char c : scrambledList) scrambled.append(c);
 
         return scrambled.toString().toUpperCase();
+    }
+
+    @Override
+    public void finish() {
+
+        Main.plugin.finishEvent(this);
+
+        if (winner == null) {
+            Bukkit.broadcastMessage("Nobody unscrambled the phrase in time! (" + phrase + ") Try again next time! ");
+        } else {
+            Bukkit.broadcastMessage(winner.getDisplayName() + " has unscrambled the phrase! (" + phrase + ")");
+        }
     }
 }

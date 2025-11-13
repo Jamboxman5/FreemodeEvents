@@ -81,48 +81,29 @@ public class RampageEvent extends FreemodeEvent {
         });
 
 
-
-
-
-
         if (targetKills <= 0) return;
 
         if (kills.get(player) < targetKills) return;
 
-        Bukkit.broadcastMessage(player.getDisplayName() + " was the first to reach " + targetKills + " kills!");
-        Main.plugin.finishEvent(this);
+        finish();
 
     }
 
     @Override
     public void run() {
 
-        Bukkit.broadcastMessage("Rampage! The player with the most mob kills after " + timeLimit + " seconds wins!");
+        if (targetKills > 0) {
+            Bukkit.broadcastMessage("Rampage! The first player to reach " + targetKills + " kills within " + timeLimit + " seconds wins!");
+        } else {
+            Bukkit.broadcastMessage("Rampage! The player with the most mob kills after " + timeLimit + " seconds wins!");
+        }
 
         try {
             Thread.sleep(1000L * timeLimit);
             if (!Main.plugin.isRunningEvent(this)) return;
 
-            Player highest = null;
-            for (Player p : kills.keySet()) {
-                if (highest == null) highest = p;
-                if (kills.get(p) > kills.get(highest)) highest = p;
-            }
+            finish();
 
-            if (highest == null) {
-                Bukkit.broadcastMessage(ChatColor.RED + "No players killed any mobs! Weak show!");
-            } else {
-                Bukkit.broadcastMessage(highest.getDisplayName() + " had the most mob kills at " + kills.get(highest) + "!");
-            }
-
-            Main.plugin.finishEvent(this);
-
-            Thread.sleep(1000 * 5);
-
-            for (Player p : Bukkit.getOnlinePlayers()) {
-                p.setScoreboard(Bukkit.getScoreboardManager().getNewScoreboard());
-            }
-            
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
@@ -140,5 +121,50 @@ public class RampageEvent extends FreemodeEvent {
             }
         }
         return mobs;
+    }
+
+    @Override
+    public void finish() {
+
+        Main.plugin.finishEvent(this);
+
+        Player highest = null;
+        for (Player p : kills.keySet()) {
+            if (highest == null) highest = p;
+            if (kills.get(p) > kills.get(highest)) highest = p;
+        }
+
+        if (highest == null) {
+            Bukkit.broadcastMessage(ChatColor.RED + "No players killed any mobs! Weak show!");
+        } else if (targetKills <= 0) {
+            Bukkit.broadcastMessage(highest.getDisplayName() + " had the most mob kills at " + kills.get(highest) + "!");
+        } else {
+            Bukkit.broadcastMessage(highest.getDisplayName() + " was the first to reach " + targetKills + " kills!");
+        }
+
+
+        Bukkit.getScheduler().runTaskAsynchronously(Main.plugin, () -> {
+
+            try {
+                Thread.sleep(1000 * 5);
+
+                Bukkit.getScheduler().runTask(Main.plugin, () -> {
+                    for (Player p : Bukkit.getOnlinePlayers()) {
+
+                        p.setScoreboard(Bukkit.getScoreboardManager().getNewScoreboard());
+                    }
+                });
+
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+
+        });
+
+
+
+
+
+
     }
 }

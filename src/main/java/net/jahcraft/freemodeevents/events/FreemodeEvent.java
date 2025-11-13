@@ -5,4 +5,6 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 public abstract class FreemodeEvent extends BukkitRunnable implements Listener {
 
+    public abstract void finish();
+
 }
