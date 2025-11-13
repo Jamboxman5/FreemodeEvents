@@ -1,5 +1,6 @@
 package net.jahcraft.freemodeevents.events;
 
+import net.jahcraft.freemodeevents.events.challenges.GravityStrikeEvent;
 import net.jahcraft.freemodeevents.events.challenges.RampageEvent;
 import net.jahcraft.freemodeevents.events.chat.UnscrambleEvent;
 import net.jahcraft.freemodeevents.main.Main;
@@ -27,7 +28,7 @@ public class EventController extends BukkitRunnable {
         while (!stopReceived) {
             if (Main.plugin.canRunEvent()) {
 
-                Main.plugin.runEvent(new RampageEvent());
+                Main.plugin.runEvent(getRandomEvent());
 
             } else {
                 try {
@@ -42,16 +43,26 @@ public class EventController extends BukkitRunnable {
 
     public void stop() { stopReceived = true; }
 
-    private BukkitRunnable getRandomEvent() {
-        int i = (int) (Math.random() * 2);
-        switch(i) {
-            case 0:
-                return new UnscrambleEvent();
-            case 1:
-                return new RampageEvent();
-            default:
-                return EventUtil.getGenericEvent();
-        }
+    private FreemodeEvent getRandomEvent() {
+        int unscrambleWeight = Main.config.getConfig().getInt("unscramble-weight");
+        int rampageWeight = Main.config.getConfig().getInt("rampage-weight");
+        int gravityStrikeWeight = Main.config.getConfig().getInt("gravity-strike-weight");
+
+        int total = unscrambleWeight + rampageWeight + gravityStrikeWeight;
+        int roll = (int) (Math.random() * total);
+        int counter = 0;
+
+        counter += unscrambleWeight;
+        if (roll < counter) return new UnscrambleEvent();
+
+        counter += rampageWeight;
+        if (roll < counter) return new RampageEvent();
+
+        counter += gravityStrikeWeight;
+        if (roll < counter) return new GravityStrikeEvent();
+
+        return EventUtil.getGenericEvent();
+
     }
 
 }

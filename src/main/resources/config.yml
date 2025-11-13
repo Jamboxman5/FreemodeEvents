@@ -22,16 +22,17 @@ event-cooldown: 60
 
 # Unscramble selection weight.
 # Larger number -> Higher likelihood of selection when starting an event.
+# Set to 0 to disable this type of event.
 unscramble-weight: 1
 
 # Unscramble time limit in seconds.
 unscramble-timer: 15
 
-# Unscramble difficulty (0 - Easy, 1 - Hard, 2 - Random)
+# Unscramble difficulty (0 - Easy, 1 - Hard, 2 - Random).
 # Easy mode retains the first and last character, and only randomizes those between.
 unscramble-difficulty: 0
 
-# Unscramble difficulty randomizer (Between 0.0 - 1.0)
+# Unscramble difficulty randomizer (Between 0.0 - 1.0).
 # Percent chance of an event using hard mode. 0.5 means there's a 50% chance of the event using hard mode.
 unscramble-difficulty-chance: 0.5
 
@@ -57,13 +58,14 @@ unscramble-phrases:
 
 # Rampage selection weight.
 # Larger number -> Higher likelihood of selection when starting an event.
+# Set to 0 to disable this type of event.
 rampage-weight: 1
 
 # Rampage time limit in seconds.
 rampage-timer: 180
 
-# Number of kills required to complete the rampage
-# Set to -1 to remove the limit and award highest kill count
+# Number of kills required to complete the rampage.
+# Set to -1 to remove the limit and award highest kill count.
 rampage-target: -1
 
 # Mob types which will count toward progression when killed for rampage events.
@@ -81,3 +83,19 @@ rampage-mobs:
   - SLIME
   - CREEPER
 
+### Gravity Strike Configuration
+
+# Gravity Strike selection weight.
+# Larger number -> Higher likelihood of selection when starting an event.
+# Set to 0 to disable this type of event.
+gravity-strike-weight: 1
+
+# Gravity Strike time limit in seconds.
+gravity-strike-timer: 180
+
+# Distance required to complete the challenge.
+# Set to -1 to remove the limit and award highest fall.
+gravity-strike-target: -1
+
+# Require mace for the hit to count
+gravity-strike-require-mace: false
