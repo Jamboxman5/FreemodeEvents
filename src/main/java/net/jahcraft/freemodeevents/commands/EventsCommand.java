@@ -57,6 +57,7 @@ public class EventsCommand implements CommandExecutor {
                 return true;
             }
             Main.plugin.finishEvent(Main.plugin.getRunningEvent());
+            sender.sendMessage("Event canceled.");
         }
         else if (args[0].equalsIgnoreCase("next")) {
             if (Main.plugin.isRunningEvent()) {
