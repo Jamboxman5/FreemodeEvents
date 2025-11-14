@@ -1,6 +1,7 @@
 package net.jahcraft.freemodeevents.events;
 
 import net.jahcraft.freemodeevents.events.challenges.GravityStrikeEvent;
+import net.jahcraft.freemodeevents.events.challenges.KillListEvent;
 import net.jahcraft.freemodeevents.events.challenges.RampageEvent;
 import net.jahcraft.freemodeevents.events.chat.UnscrambleEvent;
 import net.jahcraft.freemodeevents.main.Main;
@@ -47,8 +48,9 @@ public class EventController extends BukkitRunnable {
         int unscrambleWeight = Main.config.getConfig().getInt("unscramble-weight");
         int rampageWeight = Main.config.getConfig().getInt("rampage-weight");
         int gravityStrikeWeight = Main.config.getConfig().getInt("gravity-strike-weight");
+        int killListWeight = Main.config.getConfig().getInt("kill-list-weight");
 
-        int total = unscrambleWeight + rampageWeight + gravityStrikeWeight;
+        int total = unscrambleWeight + rampageWeight + gravityStrikeWeight + killListWeight;
         int roll = (int) (Math.random() * total);
         int counter = 0;
 
@@ -60,6 +62,9 @@ public class EventController extends BukkitRunnable {
 
         counter += gravityStrikeWeight;
         if (roll < counter) return new GravityStrikeEvent();
+
+        counter += killListWeight;
+        if (roll < counter) return new KillListEvent();
 
         return EventUtil.getGenericEvent();
 

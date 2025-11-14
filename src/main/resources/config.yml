@@ -10,7 +10,7 @@
 #
 
 # Cooldown between events in seconds.
-event-cooldown: 60
+event-cooldown: 300
 
 ####################################################################################################################
 
@@ -94,8 +94,38 @@ gravity-strike-weight: 1
 gravity-strike-timer: 180
 
 # Distance required to complete the challenge.
-# Set to -1 to remove the limit and award highest fall.
+# Set to -1 to remove the limit and award the highest fall.
 gravity-strike-target: -1
 
 # Require mace for the hit to count
 gravity-strike-require-mace: false
+
+### Rampage Configuration
+
+# Kill List selection weight.
+# Larger number -> Higher likelihood of selection when starting an event.
+# Set to 0 to disable this type of event.
+kill-list-weight: 1
+
+# Kill List time limit in seconds.
+kill-list-timer: 180
+
+# Kill List size.
+# Number of mob types to be selected for an event instance.
+# If this number is smaller than the eligible mobs list it will default to the full list.
+kill-list-size: 5
+
+# Mob types which are eligible for selection for an instance of Kill List.
+# Acceptable values can be found here: https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/entity/EntityType.html
+# Must be a valid mob; no armor stands or effect clouds.
+kill-list-mobs:
+  - ZOMBIE
+  - SKELETON
+  - SPIDER
+  - HUSK
+  - STRAY
+  - ENDERMAN
+  - CAVE_SPIDER
+  - BLAZE
+  - SLIME
+  - CREEPER
