@@ -1,6 +1,6 @@
 package net.jahcraft.freemodeevents.main;
 
-import net.jahcraft.freemodeevents.commands.EventCommand;
+import net.jahcraft.freemodeevents.commands.EventsCommand;
 import net.jahcraft.freemodeevents.config.DataManager;
 import net.jahcraft.freemodeevents.events.EventController;
 import net.jahcraft.freemodeevents.events.FreemodeEvent;
@@ -46,7 +46,7 @@ public class Main extends JavaPlugin {
         config = new DataManager();
         loadConfiguration();
 
-        getCommand("event").setExecutor(new EventCommand());
+        getCommand("event").setExecutor(new EventsCommand());
 
         controller = new EventController(1);
         controller.runTaskAsynchronously(this);
