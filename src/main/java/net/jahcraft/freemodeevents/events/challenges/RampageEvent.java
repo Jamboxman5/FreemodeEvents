@@ -11,14 +11,12 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.scheduler.BukkitRunnable;
-import org.bukkit.scoreboard.Criteria;
-import org.bukkit.scoreboard.DisplaySlot;
-import org.bukkit.scoreboard.Objective;
-import org.bukkit.scoreboard.Scoreboard;
+import org.bukkit.scoreboard.*;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class RampageEvent extends FreemodeEvent {
 
@@ -65,10 +63,45 @@ public class RampageEvent extends FreemodeEvent {
         if (!kills.containsKey(player)) kills.put(player, 1);
         else kills.put(player, kills.get(player) + 1);
 
+        List<Map.Entry<Player, Integer>> platform = kills.entrySet()
+                .stream()
+                .sorted((a, b) -> Integer.compare(b.getValue(), a.getValue()))
+                .limit(3)
+                .toList();
 
-        for (Player killer : kills.keySet()) {
+        for (String entry : board.getEntries()) board.resetScores(entry);
 
-            obj.getScore(killer.getDisplayName() + ChatColor.YELLOW + ": ").setScore(kills.get(killer));
+
+        for (int i = platform.size(); i > 0; i--) {
+//            Bukkit.broadcastMessage(i + " | " + platform.size());
+            Map.Entry<Player, Integer> position = platform.get(i-1);
+            Player p = position.getKey();
+            Integer kills = position.getValue();
+
+            String entry = "";
+            switch(i) {
+                case 3:
+                    entry += ChatColor.RED;
+                    break;
+                case 2:
+                    entry += ChatColor.GREEN;
+                    break;
+                case 1:
+                    entry += ChatColor.BLUE;
+                    break;
+                default:
+                    entry += ChatColor.BLACK;
+                    break;
+            }
+
+            Team team = board.getTeam("rank" + i);
+            if (team == null) team = board.registerNewTeam("rank" + i);
+
+            team.addEntry(entry);
+            team.setPrefix(p.getDisplayName() + ": ");
+            team.setSuffix(kills + " Kills");
+
+            obj.getScore(entry).setScore(i);
 
         }
 
