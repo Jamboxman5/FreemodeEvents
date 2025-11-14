@@ -2,8 +2,8 @@ package net.jahcraft.freemodeevents.events.challenges;
 
 import net.jahcraft.freemodeevents.events.FreemodeEvent;
 import net.jahcraft.freemodeevents.main.Main;
+import net.md_5.bungee.api.ChatColor;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
@@ -48,7 +48,14 @@ public class GravityStrikeEvent extends FreemodeEvent {
 
         Bukkit.getScheduler().runTask(Main.plugin, () -> {
             board = Bukkit.getScoreboardManager().getNewScoreboard();
-            obj = board.registerNewObjective("gravitystrikescores", Criteria.DUMMY, ChatColor.AQUA + "" + ChatColor.BOLD + "Gravity Strike");
+            obj = board.registerNewObjective("gravitystrikescores", Criteria.DUMMY,
+                    ChatColor.of("#007AD0") + "" +
+                    ChatColor.STRIKETHROUGH + "     " +
+                            ChatColor.GRAY + "[ " +
+                            ChatColor.of("#FFD700")+ "" + ChatColor.BOLD + "Gravity Strike" +
+                            ChatColor.GRAY + " ]" +
+                            ChatColor.of("#007AD0") + "" +
+                            ChatColor.STRIKETHROUGH + "     ");
             obj.setDisplaySlot(DisplaySlot.SIDEBAR);
         });
 
@@ -105,8 +112,8 @@ public class GravityStrikeEvent extends FreemodeEvent {
             if (team == null) team = board.registerNewTeam("rank" + i);
 
             team.addEntry(entry);
-            team.setPrefix(p.getDisplayName() + ": ");
-            team.setSuffix(String.format("%.2f", distance) + "m");
+            team.setPrefix(ChatColor.of("#49B3FF") + p.getName() + ": ");
+            team.setSuffix(ChatColor.of("#FFD700") + String.format("%.2f", distance) + "m");
 
             obj.getScore(entry).setScore(i);
 

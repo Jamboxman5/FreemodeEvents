@@ -2,8 +2,8 @@ package net.jahcraft.freemodeevents.events.challenges;
 
 import net.jahcraft.freemodeevents.events.FreemodeEvent;
 import net.jahcraft.freemodeevents.main.Main;
+import net.md_5.bungee.api.ChatColor;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Mob;
@@ -41,7 +41,13 @@ public class RampageEvent extends FreemodeEvent {
 
         Bukkit.getScheduler().runTask(Main.plugin, () -> {
             board = Bukkit.getScoreboardManager().getNewScoreboard();
-            obj = board.registerNewObjective("rampagescores", Criteria.DUMMY, ChatColor.RED + "" + ChatColor.BOLD + "Rampage!");
+            obj = board.registerNewObjective("rampagescores", Criteria.DUMMY, ChatColor.of("#007AD0") + "" +
+                    ChatColor.STRIKETHROUGH + "     " +
+                    ChatColor.GRAY + "[ " +
+                    ChatColor.of("#FFD700")+ "" + ChatColor.BOLD + "Rampage!" +
+                    ChatColor.GRAY + " ]" +
+                    ChatColor.of("#007AD0") + "" +
+                    ChatColor.STRIKETHROUGH + "     ");
             obj.setDisplaySlot(DisplaySlot.SIDEBAR);
         });
 
@@ -98,8 +104,9 @@ public class RampageEvent extends FreemodeEvent {
             if (team == null) team = board.registerNewTeam("rank" + i);
 
             team.addEntry(entry);
-            team.setPrefix(p.getDisplayName() + ": ");
-            team.setSuffix(kills + " Kills");
+            team.setPrefix(ChatColor.of("#49B3FF") + p.getName() + ": ");
+            if (kills == 1) team.setSuffix(ChatColor.of("#FFD700") + "" + kills + " Kill");
+            else team.setSuffix(ChatColor.of("#FFD700") + "" + kills + " Kills");
 
             obj.getScore(entry).setScore(i);
 
