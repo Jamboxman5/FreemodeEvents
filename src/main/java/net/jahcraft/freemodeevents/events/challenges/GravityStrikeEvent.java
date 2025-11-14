@@ -11,20 +11,23 @@ import org.bukkit.entity.Mob;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
-import org.bukkit.scoreboard.Criteria;
-import org.bukkit.scoreboard.DisplaySlot;
-import org.bukkit.scoreboard.Objective;
-import org.bukkit.scoreboard.Scoreboard;
+import org.bukkit.scoreboard.*;
 
+import java.io.CharArrayReader;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class GravityStrikeEvent extends FreemodeEvent {
 
     private final int timeLimit;
     private final int targetDistance;
     private final boolean requireMace;
+
+    private Player first;
+    private Player second;
+    private Player third;
 
     private final HashMap<Player, Float> distances;
 
@@ -65,12 +68,47 @@ public class GravityStrikeEvent extends FreemodeEvent {
 
         if (requireMace && player.getInventory().getItemInMainHand().getType() != Material.MACE) return;
 
+        if (distances.containsKey(player) && distances.get(player) > player.getFallDistance()) return;
         distances.put(player, player.getFallDistance());
 
+        List<Map.Entry<Player, Float>> platform = distances.entrySet()
+                .stream()
+                .sorted((a, b) -> Float.compare(b.getValue(), a.getValue()))
+                .limit(3)
+                .toList();
 
-        for (Player contestant : distances.keySet()) {
+        for (String entry : board.getEntries()) board.resetScores(entry);
 
-            obj.getScore(contestant.getDisplayName() + ChatColor.YELLOW + ": " + distances.get(contestant)).setScore(1);
+        for (int i = platform.size(); i > 0; i--) {
+//            Bukkit.broadcastMessage(i + " | " + platform.size());
+            Map.Entry<Player, Float> position = platform.get(i-1);
+            Player p = position.getKey();
+            Float distance = position.getValue();
+
+            String entry = "";
+            switch(i) {
+                case 3:
+                    entry += ChatColor.RED;
+                    break;
+                case 2:
+                    entry += ChatColor.GREEN;
+                    break;
+                case 1:
+                    entry += ChatColor.BLUE;
+                    break;
+                default:
+                    entry += ChatColor.BLACK;
+                    break;
+            }
+
+            Team team = board.getTeam("rank" + i);
+            if (team == null) team = board.registerNewTeam("rank" + i);
+
+            team.addEntry(entry);
+            team.setPrefix(p.getDisplayName() + ": ");
+            team.setSuffix(String.format("%.2f", distance) + "m");
+
+            obj.getScore(entry).setScore(i);
 
         }
 
@@ -126,7 +164,7 @@ public class GravityStrikeEvent extends FreemodeEvent {
         if (highest == null) {
             Bukkit.broadcastMessage(ChatColor.RED + "No players landed any hits! Weak show!");
         } else if (targetDistance <= 0) {
-            Bukkit.broadcastMessage(highest.getDisplayName() + " landed the highest hit from " + distances.get(highest) + "!");
+            Bukkit.broadcastMessage(highest.getDisplayName() + " landed the highest hit from " + String.format("%.2f", distances.get(highest)) + "!");
         } else {
             Bukkit.broadcastMessage(highest.getDisplayName() + " was the first to land a hit from " + targetDistance + " blocks!");
         }

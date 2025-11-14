@@ -6,6 +6,7 @@ import net.jahcraft.freemodeevents.events.EventController;
 import net.jahcraft.freemodeevents.events.FreemodeEvent;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandExecutor;
+import org.bukkit.entity.Player;
 import org.bukkit.event.HandlerList;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -51,13 +52,17 @@ public class Main extends JavaPlugin {
 	@Override
 	public void onDisable() {
 
+        //Clear scoreboards
+        for (Player p : Bukkit.getOnlinePlayers()) {
+
+            p.setScoreboard(Bukkit.getScoreboardManager().getNewScoreboard());
+        }
+
         controller.stop();
         controller.cancel();
 
 		if (currentEvent != null) {
             finishEvent(currentEvent);
-            currentEvent.cancel();
-            currentEvent = null;
         }
 
 	}
@@ -92,6 +97,7 @@ public class Main extends JavaPlugin {
 
     public void finishEvent(FreemodeEvent event) {
         if (currentEvent == event) {
+            currentEvent.cancel();
             currentEvent = null;
             lastEventEnd = System.currentTimeMillis();
         }
