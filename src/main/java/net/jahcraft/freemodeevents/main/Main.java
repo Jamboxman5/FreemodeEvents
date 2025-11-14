@@ -83,15 +83,17 @@ public class Main extends JavaPlugin {
 		
 	}
 
-    public boolean canRunEvent() {
+    public boolean canRunEvent(boolean ignoreCooldown) {
 //        Bukkit.getLogger().info("Event running? " + (currentEvent != null));
 //        Bukkit.getLogger().info("Cooldown? " + eventCooldown + "s");
 //        Bukkit.getLogger().info("Cooldown passed? " + ((System.currentTimeMillis() - lastEventEnd)/1000) + "s");
+        if (ignoreCooldown) return (currentEvent == null && !Bukkit.getOnlinePlayers().isEmpty());
         return (currentEvent == null && !Bukkit.getOnlinePlayers().isEmpty() && (System.currentTimeMillis() - lastEventEnd >= (eventCooldown * 1000)));
+
     }
 
     public void runEvent(FreemodeEvent event) {
-        if (!canRunEvent()) {
+        if (!canRunEvent(true)) {
             Bukkit.getLogger().warning("Tried to run event while event running!");
             return;
         }

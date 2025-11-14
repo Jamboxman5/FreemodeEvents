@@ -1,5 +1,9 @@
 package net.jahcraft.freemodeevents.commands;
 
+import net.jahcraft.freemodeevents.events.challenges.GravityStrikeEvent;
+import net.jahcraft.freemodeevents.events.challenges.KillListEvent;
+import net.jahcraft.freemodeevents.events.challenges.RampageEvent;
+import net.jahcraft.freemodeevents.events.chat.UnscrambleEvent;
 import net.jahcraft.freemodeevents.main.Main;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
@@ -35,6 +39,13 @@ public class EventsCommand implements CommandExecutor {
                 sender.sendMessage(ChatColor.RED + "Improper usage! Use \"/event trigger <event>\"");
                 return true;
             }
+            if (!Main.plugin.canRunEvent(true)) return true;
+
+            if (args[1].equalsIgnoreCase("killlist")) Main.plugin.runEvent(new KillListEvent());
+            if (args[1].equalsIgnoreCase("gravitystrike")) Main.plugin.runEvent(new GravityStrikeEvent());
+            if (args[1].equalsIgnoreCase("rampage")) Main.plugin.runEvent(new RampageEvent());
+            if (args[1].equalsIgnoreCase("unscramble")) Main.plugin.runEvent(new UnscrambleEvent());
+            sender.sendMessage("New event triggered.");
         }
         else if (args[0].equalsIgnoreCase("cancel")) {
             if (!sender.hasPermission("freemodeevents.admin")) {

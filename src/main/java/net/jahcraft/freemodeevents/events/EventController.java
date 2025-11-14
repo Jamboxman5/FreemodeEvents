@@ -27,7 +27,7 @@ public class EventController extends BukkitRunnable {
         Bukkit.getLogger().info("Event Controller running!");
 
         while (!stopReceived) {
-            if (Main.plugin.canRunEvent()) {
+            if (Main.plugin.canRunEvent(false)) {
 
                 Main.plugin.runEvent(getRandomEvent());
 
