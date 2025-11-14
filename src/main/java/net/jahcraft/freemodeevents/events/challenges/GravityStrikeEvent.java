@@ -145,6 +145,8 @@ public class GravityStrikeEvent extends FreemodeEvent {
             Bukkit.broadcastMessage("Gravity Strike! The player who lands the a hit from the highest distance within " + timeLimit + " seconds wins!");
         }
 
+        Main.plugin.setCurrentScoreboard(board);
+
         try {
             Thread.sleep(1000L * timeLimit);
             if (!Main.plugin.isRunningEvent(this)) return;

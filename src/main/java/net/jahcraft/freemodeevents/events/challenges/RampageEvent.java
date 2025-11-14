@@ -138,6 +138,9 @@ public class RampageEvent extends FreemodeEvent {
             Bukkit.broadcastMessage("Rampage! The player with the most mob kills after " + timeLimit + " seconds wins!");
         }
 
+        Main.plugin.setCurrentScoreboard(board);
+
+
         try {
             Thread.sleep(1000L * timeLimit);
             if (!Main.plugin.isRunningEvent(this)) return;

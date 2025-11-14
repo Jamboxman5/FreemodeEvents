@@ -4,6 +4,7 @@ import net.jahcraft.freemodeevents.commands.EventCommand;
 import net.jahcraft.freemodeevents.config.DataManager;
 import net.jahcraft.freemodeevents.events.EventController;
 import net.jahcraft.freemodeevents.events.FreemodeEvent;
+import net.jahcraft.freemodeevents.listeners.JoinListener;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.entity.Player;
@@ -12,6 +13,7 @@ import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import net.milkbowl.vault.economy.Economy;
+import org.bukkit.scoreboard.Scoreboard;
 
 public class Main extends JavaPlugin {
 
@@ -20,6 +22,7 @@ public class Main extends JavaPlugin {
     public static DataManager config;
 
     private FreemodeEvent currentEvent;
+    private Scoreboard currentScoreboard;
 
     private int eventCooldown;
     private EventController controller;
@@ -36,6 +39,8 @@ public class Main extends JavaPlugin {
 			return;
 			
 		}
+
+        getServer().getPluginManager().registerEvents(new JoinListener(), this);
 
         plugin = this;
         config = new DataManager();
@@ -101,6 +106,7 @@ public class Main extends JavaPlugin {
             currentEvent = null;
             lastEventEnd = System.currentTimeMillis();
         }
+        currentScoreboard = null;
         HandlerList.unregisterAll(event);
 
     }
@@ -123,4 +129,7 @@ public class Main extends JavaPlugin {
     public void loadConfiguration() {
         eventCooldown = config.getConfig().getInt("event-cooldown");
     }
+
+    public void setCurrentScoreboard(Scoreboard board) { this.currentScoreboard = board; }
+    public Scoreboard getCurrentScoreboard() { return currentScoreboard; }
 }
