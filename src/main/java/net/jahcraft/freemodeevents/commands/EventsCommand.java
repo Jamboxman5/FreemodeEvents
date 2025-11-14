@@ -13,12 +13,11 @@ public class EventsCommand implements CommandExecutor {
 
         if (args.length == 0) {
             sender.sendMessage(ChatColor.RED + "Available subcommands: ");
-            sender.sendMessage(ChatColor.RED + "/event cooldown");
-            sender.sendMessage(ChatColor.RED + "/event next");
+            sender.sendMessage(ChatColor.RED + "/events next");
             if (sender.hasPermission("freemodeevents.admin")) {
-                sender.sendMessage(ChatColor.RED + "/event trigger");
-                sender.sendMessage(ChatColor.RED + "/event cancel");
-                sender.sendMessage(ChatColor.RED + "/event reload");
+                sender.sendMessage(ChatColor.RED + "/events trigger");
+                sender.sendMessage(ChatColor.RED + "/events cancel");
+                sender.sendMessage(ChatColor.RED + "/events reload");
             }
             return true;
         }
@@ -46,13 +45,7 @@ public class EventsCommand implements CommandExecutor {
                 sender.sendMessage(ChatColor.RED + "There's no active event to cancel!");
                 return true;
             }
-        }
-        else if (args[0].equalsIgnoreCase("cooldown")) {
-            if (Main.plugin.isRunningEvent()) {
-                sender.sendMessage(ChatColor.RED + "There's an event currently running!");
-                return true;
-            }
-            sender.sendMessage("The next event will begin in ~" + Main.plugin.getEventCooldown() + " seconds");
+            Main.plugin.finishEvent(Main.plugin.getRunningEvent());
         }
         else if (args[0].equalsIgnoreCase("next")) {
             if (Main.plugin.isRunningEvent()) {

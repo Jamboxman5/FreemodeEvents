@@ -46,7 +46,7 @@ public class Main extends JavaPlugin {
         config = new DataManager();
         loadConfiguration();
 
-        getCommand("event").setExecutor(new EventsCommand());
+        getCommand("events").setExecutor(new EventsCommand());
 
         controller = new EventController(1);
         controller.runTaskAsynchronously(this);
