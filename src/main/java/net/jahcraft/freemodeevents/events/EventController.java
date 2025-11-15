@@ -3,13 +3,12 @@ package net.jahcraft.freemodeevents.events;
 import net.jahcraft.freemodeevents.events.challenges.GravityStrikeEvent;
 import net.jahcraft.freemodeevents.events.challenges.KillListEvent;
 import net.jahcraft.freemodeevents.events.challenges.RampageEvent;
+import net.jahcraft.freemodeevents.events.vip.ExecutiveSearchEvent;
 import net.jahcraft.freemodeevents.events.chat.UnscrambleEvent;
 import net.jahcraft.freemodeevents.main.Main;
 import net.jahcraft.freemodeevents.util.EventUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.scheduler.BukkitRunnable;
-
-import java.util.ArrayList;
 
 public class EventController extends BukkitRunnable {
 

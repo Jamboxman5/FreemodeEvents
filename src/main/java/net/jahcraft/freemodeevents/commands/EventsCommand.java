@@ -3,12 +3,14 @@ package net.jahcraft.freemodeevents.commands;
 import net.jahcraft.freemodeevents.events.challenges.GravityStrikeEvent;
 import net.jahcraft.freemodeevents.events.challenges.KillListEvent;
 import net.jahcraft.freemodeevents.events.challenges.RampageEvent;
+import net.jahcraft.freemodeevents.events.vip.ExecutiveSearchEvent;
 import net.jahcraft.freemodeevents.events.chat.UnscrambleEvent;
 import net.jahcraft.freemodeevents.main.Main;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 
 public class EventsCommand implements CommandExecutor {
     @Override
@@ -45,6 +47,7 @@ public class EventsCommand implements CommandExecutor {
             if (args[1].equalsIgnoreCase("gravitystrike")) Main.plugin.runEvent(new GravityStrikeEvent());
             if (args[1].equalsIgnoreCase("rampage")) Main.plugin.runEvent(new RampageEvent());
             if (args[1].equalsIgnoreCase("unscramble")) Main.plugin.runEvent(new UnscrambleEvent());
+            if (args[1].equalsIgnoreCase("executivesearch") && sender instanceof Player p) Main.plugin.runEvent(new ExecutiveSearchEvent(p, p.getLocation()));
             sender.sendMessage("New event triggered.");
         }
         else if (args[0].equalsIgnoreCase("cancel")) {

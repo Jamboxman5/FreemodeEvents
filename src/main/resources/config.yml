@@ -129,3 +129,22 @@ kill-list-mobs:
   - BLAZE
   - SLIME
   - CREEPER
+
+####################################################################################################################
+
+#
+# Work Event Configuration
+#
+
+## These events are triggered by players using the /work command.
+
+### Executive Search Configuration
+
+# Executive Search time limit in seconds.
+executive-search-timer: 180
+
+# Frequency of location alert sounds in seconds.
+executive-search-beep-frequency: 3
+
+# Radius of the search zone in blocks
+executive-search-radius: 100
