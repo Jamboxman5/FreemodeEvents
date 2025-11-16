@@ -2,6 +2,7 @@ package net.jahcraft.freemodeevents.events.challenges;
 
 import net.jahcraft.freemodeevents.events.FreemodeEvent;
 import net.jahcraft.freemodeevents.main.Main;
+import net.jahcraft.freemodeevents.util.EventUtil;
 import net.md_5.bungee.api.ChatColor;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.EntityType;
@@ -133,9 +134,9 @@ public class RampageEvent extends FreemodeEvent {
     public void run() {
 
         if (targetKills > 0) {
-            Bukkit.broadcastMessage("Rampage! The first player to reach " + targetKills + " kills within " + timeLimit + " seconds wins!");
+            Bukkit.broadcastMessage("Rampage! The first player to reach " + targetKills + " kills within " + EventUtil.secondsToMinutes(timeLimit) + " wins!");
         } else {
-            Bukkit.broadcastMessage("Rampage! The player with the most mob kills after " + timeLimit + " seconds wins!");
+            Bukkit.broadcastMessage("Rampage! The player with the most mob kills after " + EventUtil.secondsToMinutes(timeLimit) + " wins!");
         }
 
         Main.plugin.setCurrentScoreboard(board);

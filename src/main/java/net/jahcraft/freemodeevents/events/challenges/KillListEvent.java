@@ -2,6 +2,7 @@ package net.jahcraft.freemodeevents.events.challenges;
 
 import net.jahcraft.freemodeevents.events.FreemodeEvent;
 import net.jahcraft.freemodeevents.main.Main;
+import net.jahcraft.freemodeevents.util.EventUtil;
 import net.md_5.bungee.api.ChatColor;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.EntityType;
@@ -126,7 +127,7 @@ public class KillListEvent extends FreemodeEvent {
     @Override
     public void run() {
 
-        Bukkit.broadcastMessage("Kill List! The first player to kill one of each mob within " + timeLimit + " seconds wins!");
+        Bukkit.broadcastMessage("Kill List! The first player to kill one of each mob within " + EventUtil.secondsToMinutes(timeLimit) + " wins!");
         StringBuilder mobs = new StringBuilder();
         for (EntityType type : killList) mobs.append(getFormattedName(type)).append(", ");
         Bukkit.broadcastMessage("The mobs to kill are: " + mobs.substring(0, mobs.toString().length()-2));

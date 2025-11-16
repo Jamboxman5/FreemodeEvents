@@ -2,6 +2,7 @@ package net.jahcraft.freemodeevents.events.challenges;
 
 import net.jahcraft.freemodeevents.events.FreemodeEvent;
 import net.jahcraft.freemodeevents.main.Main;
+import net.jahcraft.freemodeevents.util.EventUtil;
 import net.md_5.bungee.api.ChatColor;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -141,15 +142,15 @@ public class GravityStrikeEvent extends FreemodeEvent {
 
         if (requireMace) {
             if (targetDistance > 0) {
-                Bukkit.broadcastMessage("Gravity Strike! The first player to land a hit using a mace from " + targetDistance + " blocks within " + timeLimit + " seconds wins!");
+                Bukkit.broadcastMessage("Gravity Strike! The first player to land a hit using a mace from " + targetDistance + " blocks within " + EventUtil.secondsToMinutes(timeLimit) + " wins!");
             } else {
-                Bukkit.broadcastMessage("Gravity Strike! The player who lands the a hit using a mace from the highest distance within " + timeLimit + " seconds wins!");
+                Bukkit.broadcastMessage("Gravity Strike! The player who lands the a hit using a mace from the highest distance within " + EventUtil.secondsToMinutes(timeLimit) + " wins!");
             }
         } else {
             if (targetDistance > 0) {
-                Bukkit.broadcastMessage("Gravity Strike! The first player to land a hit from " + targetDistance + " blocks within " + timeLimit + " seconds wins!");
+                Bukkit.broadcastMessage("Gravity Strike! The first player to land a hit from " + targetDistance + " blocks within " + EventUtil.secondsToMinutes(timeLimit) + " wins!");
             } else {
-                Bukkit.broadcastMessage("Gravity Strike! The player who lands the a hit from the highest distance within " + timeLimit + " seconds wins!");
+                Bukkit.broadcastMessage("Gravity Strike! The player who lands the a hit from the highest distance within " + EventUtil.secondsToMinutes(timeLimit) + " wins!");
             }
         }
 

@@ -2,6 +2,7 @@ package net.jahcraft.freemodeevents.events.vip;
 
 import net.jahcraft.freemodeevents.events.FreemodeEvent;
 import net.jahcraft.freemodeevents.main.Main;
+import net.jahcraft.freemodeevents.util.EventUtil;
 import net.md_5.bungee.api.ChatColor;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -102,7 +103,7 @@ public class ExecutiveSearchEvent extends FreemodeEvent {
     @Override
     public void run() {
 
-        Bukkit.broadcastMessage(executive.getName() + " has started an Executive Search! Find and kill them within " + timeLimit +  " seconds. They are located within " + radius + " blocks of " + center.getBlockX() + ", " + center.getBlockZ() + ".");
+        Bukkit.broadcastMessage(executive.getName() + " has started an Executive Search! Find and kill them within " + EventUtil.secondsToMinutes(timeLimit) + ". They are located within " + radius + " blocks of " + center.getBlockX() + ", " + center.getBlockZ() + ".");
 
         Main.plugin.setCurrentScoreboard(board);
 

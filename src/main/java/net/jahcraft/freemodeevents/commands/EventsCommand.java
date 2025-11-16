@@ -6,6 +6,7 @@ import net.jahcraft.freemodeevents.events.challenges.RampageEvent;
 import net.jahcraft.freemodeevents.events.vip.ExecutiveSearchEvent;
 import net.jahcraft.freemodeevents.events.chat.UnscrambleEvent;
 import net.jahcraft.freemodeevents.main.Main;
+import net.jahcraft.freemodeevents.util.EventUtil;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.chat.*;
 import net.md_5.bungee.api.chat.TextComponent;
@@ -88,7 +89,7 @@ public class EventsCommand implements CommandExecutor {
                 } else {
                     int cooldown = Main.config.getConfig().getInt("executive-search-cooldown");
                     int seconds = Math.toIntExact(cooldown - (int) ((System.currentTimeMillis() - Main.lastExecutiveSearch) / 1000f));
-                    sender.sendMessage(ChatColor.RED + "You must wait " + seconds + " before starting another Executive Search!");
+                    sender.sendMessage(ChatColor.RED + "You must wait " + EventUtil.secondsToMinutes(seconds) + " before starting another Executive Search!");
                 }
                 return true;
             }
@@ -111,7 +112,7 @@ public class EventsCommand implements CommandExecutor {
                 sender.sendMessage(ChatColor.RED + "There's an event currently running!");
                 return true;
             }
-            sender.sendMessage("The next event will begin in ~" + Main.plugin.getEventCooldown() + " seconds");
+            sender.sendMessage("The next event will begin in ~" + EventUtil.secondsToMinutes(Main.plugin.getEventCooldown()));
         }
         else if (args[0].equalsIgnoreCase("reload")) {
             Main.config.reloadConfig();

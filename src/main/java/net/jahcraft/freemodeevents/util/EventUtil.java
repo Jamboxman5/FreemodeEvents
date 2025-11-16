@@ -21,4 +21,18 @@ public class EventUtil {
             }
         };
     }
+
+    public static String secondsToMinutes(int seconds) {
+        int minutes = seconds / 60;
+        int leftover = seconds % 60;
+        if (seconds < 60) return seconds + " seconds";
+        if (minutes == 1) {
+            if (leftover == 0) return minutes + " minute";
+            return minutes + " minute & " + leftover + " seconds";
+        } else {
+            if (leftover == 0) return minutes + " minutes";
+            return minutes + " minutes & " + leftover + " seconds";
+        }
+
+    }
 }
