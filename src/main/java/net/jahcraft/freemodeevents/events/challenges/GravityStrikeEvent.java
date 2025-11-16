@@ -139,11 +139,23 @@ public class GravityStrikeEvent extends FreemodeEvent {
     @Override
     public void run() {
 
-        if (targetDistance > 0) {
-            Bukkit.broadcastMessage("Gravity Strike! The first player to land a hit from " + targetDistance + " blocks within " + timeLimit + " seconds wins!");
+        if (requireMace) {
+            if (targetDistance > 0) {
+                Bukkit.broadcastMessage("Gravity Strike! The first player to land a hit using a mace from " + targetDistance + " blocks within " + timeLimit + " seconds wins!");
+            } else {
+                Bukkit.broadcastMessage("Gravity Strike! The player who lands the a hit using a mace from the highest distance within " + timeLimit + " seconds wins!");
+            }
         } else {
-            Bukkit.broadcastMessage("Gravity Strike! The player who lands the a hit from the highest distance within " + timeLimit + " seconds wins!");
+            if (targetDistance > 0) {
+                Bukkit.broadcastMessage("Gravity Strike! The first player to land a hit from " + targetDistance + " blocks within " + timeLimit + " seconds wins!");
+            } else {
+                Bukkit.broadcastMessage("Gravity Strike! The player who lands the a hit from the highest distance within " + timeLimit + " seconds wins!");
+            }
         }
+
+
+
+
 
         Main.plugin.setCurrentScoreboard(board);
 
