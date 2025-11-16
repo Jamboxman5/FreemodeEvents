@@ -28,6 +28,8 @@ public class Main extends JavaPlugin {
     private EventController controller;
 
     private long lastEventEnd = 0;
+
+    public static long lastExecutiveSearch = 0;
 	
 	@Override
 	public void onEnable() {

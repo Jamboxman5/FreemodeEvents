@@ -102,7 +102,7 @@ public class ExecutiveSearchEvent extends FreemodeEvent {
     @Override
     public void run() {
 
-        Bukkit.broadcastMessage(executive.getName() + " has started an Executive Search! Find and kill them. They are located within " + radius + " blocks of " + center.getBlockX() + ", " + center.getBlockZ() + ".");
+        Bukkit.broadcastMessage(executive.getName() + " has started an Executive Search! Find and kill them within " + timeLimit +  " seconds. They are located within " + radius + " blocks of " + center.getBlockX() + ", " + center.getBlockZ() + ".");
 
         Main.plugin.setCurrentScoreboard(board);
 
@@ -169,6 +169,7 @@ public class ExecutiveSearchEvent extends FreemodeEvent {
     @Override
     public void finish() {
 
+        Main.lastExecutiveSearch = System.currentTimeMillis();
         Main.plugin.finishEvent(this);
 
         if (fled) {

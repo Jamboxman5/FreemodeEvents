@@ -143,6 +143,9 @@ kill-list-mobs:
 # Executive Search time limit in seconds.
 executive-search-timer: 180
 
+# Cooldown before a player can start another Executive Search
+executive-search-cooldown: 600
+
 # Frequency of location alert sounds in seconds.
 executive-search-beep-frequency: 3
 

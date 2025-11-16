@@ -10,6 +10,7 @@ import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.chat.*;
 import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.chat.hover.content.Text;
+import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -81,7 +82,16 @@ public class EventsCommand implements CommandExecutor {
                 sender.spigot().sendMessage(msg);
                 return true;
             }
-            if (args[1].equalsIgnoreCase("executivesearch")) Main.plugin.runEvent(new ExecutiveSearchEvent(p, p.getLocation()));
+            if (args[1].equalsIgnoreCase("executivesearch")) {
+                if (System.currentTimeMillis() - Main.lastExecutiveSearch > Main.config.getConfig().getInt("executive-search-cooldown") * 1000F) {
+                    Main.plugin.runEvent(new ExecutiveSearchEvent(p, p.getLocation()));
+                } else {
+                    int cooldown = Main.config.getConfig().getInt("executive-search-cooldown");
+                    int seconds = Math.toIntExact(cooldown - (int) ((System.currentTimeMillis() - Main.lastExecutiveSearch) / 1000f));
+                    sender.sendMessage(ChatColor.RED + "You must wait " + seconds + " before starting another Executive Search!");
+                }
+                return true;
+            }
             return true;
         }
         else if (args[0].equalsIgnoreCase("cancel")) {
