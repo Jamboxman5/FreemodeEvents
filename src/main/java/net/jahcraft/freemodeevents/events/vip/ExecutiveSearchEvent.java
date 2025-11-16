@@ -23,6 +23,7 @@ public class ExecutiveSearchEvent extends FreemodeEvent {
     private Scoreboard board;
     private Objective obj;
     private Player winner = null;
+    private boolean fled = false;
 
     public ExecutiveSearchEvent(Player target, Location center) {
         this(target, center, Main.config.getConfig().getInt("executive-search-timer"), Main.config.getConfig().getInt("executive-search-beep-frequency"), Main.config.getConfig().getInt("executive-search-radius"));
@@ -61,7 +62,7 @@ public class ExecutiveSearchEvent extends FreemodeEvent {
 
 
             team1.setPrefix(ChatColor.of("#49B3FF") + "Hunt down the executive located");
-            team3.setPrefix(ChatColor.of("#007AD0") + "" +  ChatColor.STRIKETHROUGH + "             ");
+            team3.setPrefix(ChatColor.of("#007AD0") + "" +  ChatColor.STRIKETHROUGH + "                                           ");
             team2.setPrefix(ChatColor.of("#49B3FF") + "within " + ChatColor.of("#FFD700") + radius + ChatColor.of("#49B3FF") + " blocks of " +
                     ChatColor.of("#FFD700") + center.getBlockX() + ChatColor.of("#49B3FF") + ", " + ChatColor.of("#FFD700") + center.getBlockZ());
 
@@ -117,13 +118,28 @@ public class ExecutiveSearchEvent extends FreemodeEvent {
             while (Main.plugin.isRunningEvent(this)) {
 
                 try {
-                    Thread.sleep(1000L * beepFrequency);
-                    Bukkit.getScheduler().runTask(Main.plugin, () -> {
-                        executive.getLocation().getWorld().playSound(executive.getLocation(), Sound.UI_TOAST_IN, 1f, 1f);
-                    });
+                    if (beepFrequency > 0) {
+                        Thread.sleep(1000L * beepFrequency);
+                    } else {
+                        Thread.sleep(1000L);
+                    }
+
                 } catch (InterruptedException e) {
                     throw new RuntimeException(e);
                 }
+
+                if (!isWithinRadius(executive)) {
+                    fled = true;
+                    finish();
+                } else {
+                    Bukkit.getScheduler().runTask(Main.plugin, () -> {
+                        for (Player p : Bukkit.getOnlinePlayers()) {
+                            if (!p.getUniqueId().equals(executive.getUniqueId()))
+                                p.playSound(executive.getLocation(), Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1f, 1f);
+                        }
+                    });
+                }
+
             }
         });
 
@@ -140,14 +156,28 @@ public class ExecutiveSearchEvent extends FreemodeEvent {
 
     }
 
+    private boolean isWithinRadius(Player p) {
+        int x1 = center.getBlockX();
+        int z1 = center.getBlockZ();
+        int x2 = p.getLocation().getBlockX();
+        int z2 = p.getLocation().getBlockZ();
+
+        int distance = (int) Math.sqrt(Math.pow(x2-x1, 2) + Math.pow(z2 - z1, 2));
+        return distance < radius;
+    }
+
     @Override
     public void finish() {
 
         Main.plugin.finishEvent(this);
 
-        if (winner != null) {
+        if (fled) {
+            Bukkit.broadcastMessage(ChatColor.RED + executive.getName() + " has fled the search zone! Poor show!");
+        }
+        else if (winner != null) {
             Bukkit.broadcastMessage(winner.getName() + " has successfully hunted the executive!");
-        } else {
+        }
+        else {
             Bukkit.broadcastMessage(executive.getName() + " survived the Executive Search! Congratulations!");
         }
 
