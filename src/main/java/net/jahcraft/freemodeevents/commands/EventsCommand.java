@@ -3,6 +3,7 @@ package net.jahcraft.freemodeevents.commands;
 import net.jahcraft.freemodeevents.events.challenges.GravityStrikeEvent;
 import net.jahcraft.freemodeevents.events.challenges.KillListEvent;
 import net.jahcraft.freemodeevents.events.challenges.RampageEvent;
+import net.jahcraft.freemodeevents.events.challenges.SniperChallengeEvent;
 import net.jahcraft.freemodeevents.events.vip.ExecutiveSearchEvent;
 import net.jahcraft.freemodeevents.events.chat.UnscrambleEvent;
 import net.jahcraft.freemodeevents.main.Main;
@@ -57,6 +58,7 @@ public class EventsCommand implements CommandExecutor {
             if (args[1].equalsIgnoreCase("gravitystrike")) Main.plugin.runEvent(new GravityStrikeEvent());
             if (args[1].equalsIgnoreCase("rampage")) Main.plugin.runEvent(new RampageEvent());
             if (args[1].equalsIgnoreCase("unscramble")) Main.plugin.runEvent(new UnscrambleEvent());
+            if (args[1].equalsIgnoreCase("sniperchallenge")) Main.plugin.runEvent(new SniperChallengeEvent());
             if (args[1].equalsIgnoreCase("executivesearch") && sender instanceof Player p) Main.plugin.runEvent(new ExecutiveSearchEvent(p, p.getLocation()));
             sender.sendMessage("New event triggered.");
         }

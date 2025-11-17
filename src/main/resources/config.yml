@@ -12,6 +12,8 @@
 # Cooldown between events in seconds.
 event-cooldown: 300
 
+
+
 ####################################################################################################################
 
 #
@@ -48,6 +50,8 @@ unscramble-phrases:
   - WesternHunting
   - WesternBounties
 
+
+
 ####################################################################################################################
 
 #
@@ -83,6 +87,8 @@ rampage-mobs:
   - SLIME
   - CREEPER
 
+
+
 ### Gravity Strike Configuration
 
 # Gravity Strike selection weight.
@@ -100,7 +106,9 @@ gravity-strike-target: -1
 # Require mace for the hit to count
 gravity-strike-require-mace: false
 
-### Rampage Configuration
+
+
+### Kill List Configuration
 
 # Kill List selection weight.
 # Larger number -> Higher likelihood of selection when starting an event.
@@ -129,6 +137,24 @@ kill-list-mobs:
   - BLAZE
   - SLIME
   - CREEPER
+
+
+
+### Sniper Challenge Configuration
+
+# Sniper Challenge selection weight.
+# Larger number -> Higher likelihood of selection when starting an event.
+# Set to 0 to disable this type of event.
+sniper-challenge-weight: 1
+
+# Sniper Challenge time limit in seconds.
+sniper-challenge-timer: 180
+
+# Distance required to complete the challenge.
+# Set to -1 to remove the limit and award the longest snipe.
+sniper-challenge-target: -1
+
+
 
 ####################################################################################################################
 
