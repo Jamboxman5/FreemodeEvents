@@ -10,6 +10,7 @@ import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.scoreboard.*;
 
 public class ExecutiveSearchEvent extends FreemodeEvent {
@@ -25,6 +26,8 @@ public class ExecutiveSearchEvent extends FreemodeEvent {
     private Objective obj;
     private Player winner = null;
     private boolean fled = false;
+    private Location lastLocation;
+    private long lastMove;
 
     public ExecutiveSearchEvent(Player target, Location center) {
         this(target, center, Main.config.getConfig().getInt("executive-search-timer"), Main.config.getConfig().getInt("executive-search-beep-frequency"), Main.config.getConfig().getInt("executive-search-radius"));
@@ -100,12 +103,27 @@ public class ExecutiveSearchEvent extends FreemodeEvent {
 
     }
 
+    @EventHandler
+    public void onMove(PlayerMoveEvent event) {
+        if (event.getPlayer().getUniqueId() != executive.getUniqueId()) return;
+        if (lastLocation == null) {
+            lastLocation = event.getPlayer().getLocation();
+            lastMove = System.currentTimeMillis();
+            return;
+        }
+        Location newLoc = event.getPlayer().getLocation();
+        if (newLoc.equals(lastLocation)) return;
+        lastMove = System.currentTimeMillis();
+        lastLocation = event.getPlayer().getLocation();
+    }
+
     @Override
     public void run() {
 
         Bukkit.broadcastMessage(executive.getName() + " has started an Executive Search! Find and kill them within " + EventUtil.secondsToMinutes(timeLimit) + ". They are located within " + radius + " blocks of " + center.getBlockX() + ", " + center.getBlockZ() + ".");
 
         Main.plugin.setCurrentScoreboard(board);
+        lastMove = System.currentTimeMillis();
 
         Bukkit.getScheduler().runTask(Main.plugin, () -> {
 
@@ -127,6 +145,11 @@ public class ExecutiveSearchEvent extends FreemodeEvent {
 
                 } catch (InterruptedException e) {
                     throw new RuntimeException(e);
+                }
+
+                if ((System.currentTimeMillis() - lastMove) > (Main.config.getConfig().getInt("executive-search-afk-limit") * 1000L)) {
+                    Bukkit.broadcastMessage(ChatColor.RED + "The executive was last spotted near " + lastLocation.getBlockX() + ", " + lastLocation.getBlockY() + ", " + lastLocation.getBlockZ() + "! ");
+                    executive.sendMessage(ChatColor.RED + "You need to get moving! Don't stand still for too long or your location will be revealed! ");
                 }
 
                 if (!isWithinRadius(executive)) {

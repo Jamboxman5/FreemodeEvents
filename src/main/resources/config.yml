@@ -149,5 +149,8 @@ executive-search-cooldown: 600
 # Frequency of location alert sounds in seconds.
 executive-search-beep-frequency: 3
 
+# Amount of time the executive can stand still before their location is revealed.
+executive-search-afk-limit: 30
+
 # Radius of the search zone in blocks
 executive-search-radius: 100
