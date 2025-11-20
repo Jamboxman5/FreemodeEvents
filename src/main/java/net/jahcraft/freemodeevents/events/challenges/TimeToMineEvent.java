@@ -7,23 +7,18 @@ import net.md_5.bungee.api.ChatColor;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.entity.EntityType;
-import org.bukkit.entity.LivingEntity;
-import org.bukkit.entity.Mob;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
-import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.scoreboard.*;
-import org.checkerframework.checker.units.qual.A;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class MineBlocksEvent extends FreemodeEvent {
+public class TimeToMineEvent extends FreemodeEvent {
 
     private final int timeLimit;
     private final int targetCount;
@@ -36,11 +31,11 @@ public class MineBlocksEvent extends FreemodeEvent {
 
     private List<Location> placedLocs;
 
-    public MineBlocksEvent() {
+    public TimeToMineEvent() {
         this(Main.config.getConfig().getInt("time-to-mine-timer"), getTargetBlock(), Main.config.getConfig().getInt("time-to-mine-target"));
     }
 
-    public MineBlocksEvent(int timeLimit, Material target, int targetCount) {
+    public TimeToMineEvent(int timeLimit, Material target, int targetCount) {
         this.timeLimit = timeLimit;
         this.target = target;
         this.targetCount = targetCount;
@@ -49,7 +44,7 @@ public class MineBlocksEvent extends FreemodeEvent {
 
         Bukkit.getScheduler().runTask(Main.plugin, () -> {
             board = Bukkit.getScoreboardManager().getNewScoreboard();
-            obj = board.registerNewObjective("rampagescores", Criteria.DUMMY, ChatColor.of("#007AD0") + "" +
+            obj = board.registerNewObjective("timetominescores", Criteria.DUMMY, ChatColor.of("#007AD0") + "" +
                     ChatColor.STRIKETHROUGH + "     " +
                     ChatColor.GRAY + "[ " +
                     ChatColor.of("#FFD700")+ "" + ChatColor.BOLD + "Time to Mine!" +

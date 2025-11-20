@@ -129,7 +129,7 @@ public class KillListEvent extends FreemodeEvent {
 
         Bukkit.broadcastMessage("Kill List! The first player to kill one of each mob within " + EventUtil.secondsToMinutes(timeLimit) + " wins!");
         StringBuilder mobs = new StringBuilder();
-        for (EntityType type : killList) mobs.append(getFormattedName(type)).append(", ");
+        for (EntityType type : killList) mobs.append(EventUtil.getFormattedName(type)).append(", ");
         Bukkit.broadcastMessage("The mobs to kill are: " + mobs.substring(0, mobs.toString().length()-2));
 
         Main.plugin.setCurrentScoreboard(board);
@@ -145,16 +145,6 @@ public class KillListEvent extends FreemodeEvent {
             throw new RuntimeException(e);
         }
 
-    }
-
-    private String getFormattedName(EntityType type) {
-        String s = type.toString().toLowerCase();
-        StringBuilder builder = new StringBuilder();
-        for (String split : s.split("_")) {
-            String formatted = split.substring(0, 1).toUpperCase() + split.substring(1);
-            builder.append(formatted).append(" ");
-        }
-        return builder.substring(0, builder.length() - 1);
     }
 
     private static List<EntityType> getMobsFromConfig() {
