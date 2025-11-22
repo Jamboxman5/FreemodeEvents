@@ -29,7 +29,7 @@ public class EventController extends BukkitRunnable {
         while (!stopReceived) {
             if (Main.plugin.canRunEvent(false)) {
 
-                Main.plugin.runEvent(getRandomEvent());
+                Main.plugin.runEvent(EventUtil.getRandomEvent());
 
             } else {
                 try {
@@ -44,34 +44,5 @@ public class EventController extends BukkitRunnable {
 
     public void stop() { stopReceived = true; }
 
-    private FreemodeEvent getRandomEvent() {
-        int unscrambleWeight = Main.config.getConfig().getInt("unscramble-weight");
-        int rampageWeight = Main.config.getConfig().getInt("rampage-weight");
-        int gravityStrikeWeight = Main.config.getConfig().getInt("gravity-strike-weight");
-        int killListWeight = Main.config.getConfig().getInt("kill-list-weight");
-        int sniperChallengeWeight = Main.config.getConfig().getInt("sniper-challenge-weight");
-
-        int total = unscrambleWeight + rampageWeight + gravityStrikeWeight + killListWeight + sniperChallengeWeight;
-        int roll = (int) (Math.random() * total);
-        int counter = 0;
-
-        counter += unscrambleWeight;
-        if (roll < counter) return new UnscrambleEvent();
-
-        counter += rampageWeight;
-        if (roll < counter) return new RampageEvent();
-
-        counter += gravityStrikeWeight;
-        if (roll < counter) return new GravityStrikeEvent();
-
-        counter += killListWeight;
-        if (roll < counter) return new KillListEvent();
-
-        counter += sniperChallengeWeight;
-        if (roll < counter) return new SniperChallengeEvent();
-
-        return EventUtil.getGenericEvent();
-
-    }
 
 }
