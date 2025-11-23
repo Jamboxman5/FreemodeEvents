@@ -1,10 +1,7 @@
 package net.jahcraft.freemodeevents.util;
 
 import net.jahcraft.freemodeevents.events.FreemodeEvent;
-import net.jahcraft.freemodeevents.events.challenges.GravityStrikeEvent;
-import net.jahcraft.freemodeevents.events.challenges.KillListEvent;
-import net.jahcraft.freemodeevents.events.challenges.RampageEvent;
-import net.jahcraft.freemodeevents.events.challenges.SniperChallengeEvent;
+import net.jahcraft.freemodeevents.events.challenges.*;
 import net.jahcraft.freemodeevents.events.chat.UnscrambleEvent;
 import net.jahcraft.freemodeevents.main.Main;
 import org.bukkit.Bukkit;
@@ -62,8 +59,9 @@ public class EventUtil {
         int gravityStrikeWeight = Main.config.getConfig().getInt("gravity-strike-weight");
         int killListWeight = Main.config.getConfig().getInt("kill-list-weight");
         int sniperChallengeWeight = Main.config.getConfig().getInt("sniper-challenge-weight");
+        int timeToMineWeight = Main.config.getConfig().getInt("time-to-mine-weight");
 
-        int total = unscrambleWeight + rampageWeight + gravityStrikeWeight + killListWeight + sniperChallengeWeight;
+        int total = unscrambleWeight + rampageWeight + gravityStrikeWeight + killListWeight + sniperChallengeWeight + timeToMineWeight;
         int roll = (int) (Math.random() * total);
         int counter = 0;
 
@@ -81,6 +79,9 @@ public class EventUtil {
 
         counter += sniperChallengeWeight;
         if (roll < counter) return new SniperChallengeEvent();
+
+        counter += timeToMineWeight;
+        if (roll < counter) return new TimeToMineEvent();
 
         return EventUtil.getGenericEvent();
 
