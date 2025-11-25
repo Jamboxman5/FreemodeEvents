@@ -52,6 +52,44 @@ unscramble-phrases:
 
 
 
+### Trivia Configuration
+
+# Trivia selection weight.
+# Larger number -> Higher likelihood of selection when starting an event.
+# Set to 0 to disable this type of event.
+trivia-weight: 1
+
+# Trivia time limit in seconds.
+trivia-timer: 15
+
+# Questions which may be asked.
+trivia-questions:
+  - question: "Who created Minecraft?"
+    answers:
+      - "Notch"
+      - "jeb_"
+      - "Dinnerbone"
+      - "Grum"
+    correct: "Notch"
+
+  - question: "When was Minecraft Java Edition officially released?"
+    answers:
+      - "2009"
+      - "2011"
+      - "2012"
+      - "2013"
+    correct: "2011"
+
+  - question: "Who is the developer of this plugin?"
+    answers:
+      - "Jamboxman5"
+      - "SlickNick73"
+      - "Notch"
+      - "jeb_"
+    correct: "Jamboxman5"
+
+
+
 ####################################################################################################################
 
 #
