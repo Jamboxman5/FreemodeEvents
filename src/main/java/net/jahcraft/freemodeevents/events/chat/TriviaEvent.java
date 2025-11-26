@@ -2,6 +2,10 @@ package net.jahcraft.freemodeevents.events.chat;
 
 import net.jahcraft.freemodeevents.events.FreemodeEvent;
 import net.jahcraft.freemodeevents.main.Main;
+import net.md_5.bungee.api.chat.ClickEvent;
+import net.md_5.bungee.api.chat.HoverEvent;
+import net.md_5.bungee.api.chat.TextComponent;
+import net.md_5.bungee.api.chat.hover.content.Text;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -11,33 +15,22 @@ import org.bukkit.event.player.AsyncPlayerChatEvent;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 public class TriviaEvent extends FreemodeEvent {
 
-    private final String phrase;
+    private final TriviaQuestion question;
     private final int timeLimit;
-    private final boolean easyMode;
 
     private Player winner = null;
 
     public TriviaEvent() {
-        List<String> phrases = Main.config.getConfig().getStringList("unscramble-phrases");
-        this.phrase = phrases.get((int) (Math.random() * phrases.size()));
-        this.timeLimit = Main.config.getConfig().getInt("unscramble-timer");
-
-        int selectedDifficulty = Main.config.getConfig().getInt("unscramble-difficulty");
-        if (selectedDifficulty == 0) easyMode = true;
-        else if (selectedDifficulty == 1) easyMode = false;
-        else {
-            double hardChance = Main.config.getConfig().getDouble("unscramble-difficulty-chance");
-            easyMode = (Math.random() > hardChance);
-        }
+        this(getRandomQuestion(), Main.config.getConfig().getInt("trivia-timer"));
     }
 
-    public TriviaEvent(String phrase, int timeLimit, boolean easyMode) {
-        this.phrase = phrase;
+    public TriviaEvent(TriviaQuestion question, int timeLimit) {
+        this.question = question;
         this.timeLimit = timeLimit;
-        this.easyMode = easyMode;
 
         Main.plugin.getServer().getPluginManager().registerEvents(this, Main.plugin);
     }
@@ -45,7 +38,7 @@ public class TriviaEvent extends FreemodeEvent {
     @EventHandler(priority = EventPriority.LOWEST)
     public void onChat(AsyncPlayerChatEvent event) {
         if (!Main.plugin.isRunningEvent(this)) return;
-        if (event.getMessage().equalsIgnoreCase(phrase)) event.setCancelled(true);
+        if (event.getMessage().equalsIgnoreCase(question.correctAnswer)) event.setCancelled(true);
 
         winner = event.getPlayer();
 
@@ -57,7 +50,16 @@ public class TriviaEvent extends FreemodeEvent {
     public void run() {
 
         try {
-            Bukkit.broadcastMessage("Unscramble the following phrase to win a prize: " + scramble(phrase));
+            Bukkit.broadcastMessage("Trivia: " + question.question + " (Click to Answer)");
+            for (String answer : question.answers()) {
+                TextComponent msg = new TextComponent(TextComponent.fromLegacy("> §x§F§F§D§7§0§0" + answer));
+                msg.setUnderlined(true);
+                msg.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/events trivia " + answer));
+                msg.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new Text("§x§0§0§E§8§F§FClick to select this answer!")
+                ));
+                Bukkit.spigot().broadcast(msg);
+            }
+
             Thread.sleep(1000L * timeLimit);
             if (Main.plugin.isRunningEvent(this)) {
                 finish();
@@ -69,40 +71,37 @@ public class TriviaEvent extends FreemodeEvent {
 
     }
 
-    private String scramble(String word) {
-        ArrayList<Character> phraseList = new ArrayList<>();
-        for (char c : word.toCharArray()) phraseList.add(c);
-
-        ArrayList<Character> scrambledList;
-        if (!easyMode) {
-            Collections.shuffle(phraseList);
-            scrambledList = phraseList;
-        } else {
-            scrambledList = new ArrayList<>();
-            scrambledList.add(phraseList.get(0));
-            scrambledList.add(phraseList.get(phraseList.size() - 1));
-            phraseList.remove(0);
-            phraseList.remove(phraseList.size()-1);
-            Collections.shuffle(phraseList);
-            for (char c : phraseList) scrambledList.add(1, c);
-
-        }
-
-        StringBuilder scrambled = new StringBuilder();
-        for (char c : scrambledList) scrambled.append(c);
-
-        return scrambled.toString().toUpperCase();
-    }
-
     @Override
     public void finish() {
 
         Main.plugin.finishEvent(this);
 
         if (winner == null) {
-            Bukkit.broadcastMessage("Nobody unscrambled the phrase in time! (" + phrase + ") Try again next time! ");
+            Bukkit.broadcastMessage("Nobody answered the question in time! (" + question.correctAnswer + ") Try again next time! ");
         } else {
-            Bukkit.broadcastMessage(winner.getDisplayName() + " has unscrambled the phrase! (" + phrase + ")");
+            Bukkit.broadcastMessage(winner.getDisplayName() + " got the correct answer! (" + question.correctAnswer + ")");
         }
     }
+
+    private static TriviaQuestion getRandomQuestion() {
+        List<TriviaQuestion> questions = new ArrayList<>();
+        List<Map<?,?>> configEntries = Main.config.getConfig().getMapList("questions");
+
+        for (Map<?,?> entry : configEntries) {
+            String question = (String) entry.get("question");
+            List<String> answers = (List<String>) entry.get("answers");
+            String correct = (String) entry.get("correct");
+
+            if (question == null || answers == null || correct == null) {
+                Bukkit.getLogger().warning("Invalid trivia question entry in config.yml!");
+                continue;
+            }
+
+            questions.add(new TriviaQuestion(correct, answers, question));
+        }
+        return questions.get((int) (Math.random() * questions.size()));
+    }
+
+    public record TriviaQuestion(String correctAnswer, List<String> answers, String question) {}
+
 }
