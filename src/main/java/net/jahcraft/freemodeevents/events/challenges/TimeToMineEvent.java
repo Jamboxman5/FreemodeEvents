@@ -146,7 +146,7 @@ public class TimeToMineEvent extends FreemodeEvent {
         if (targetCount > 0) {
             Bukkit.broadcastMessage("Time to Mine! The first player to mine " + targetCount + " " + EventUtil.getFormattedName(target) + " within " + EventUtil.secondsToMinutes(timeLimit) + " wins!");
         } else {
-            Bukkit.broadcastMessage("Rampage! The player to mine the most " + EventUtil.getFormattedName(target) + " within " + EventUtil.secondsToMinutes(timeLimit) + " wins!");
+            Bukkit.broadcastMessage("Time to Mine! The player to mine the most " + EventUtil.getFormattedName(target) + " within " + EventUtil.secondsToMinutes(timeLimit) + " wins!");
         }
 
         Main.plugin.setCurrentScoreboard(board);
