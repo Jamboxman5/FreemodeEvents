@@ -63,7 +63,7 @@ public class EventUtil {
         int timeToMineWeight = Main.config.getConfig().getInt("time-to-mine-weight");
         int triviaWeight = Main.config.getConfig().getInt("trivia-weight");
 
-        int total = unscrambleWeight + rampageWeight + gravityStrikeWeight + killListWeight + sniperChallengeWeight + timeToMineWeight;
+        int total = unscrambleWeight + rampageWeight + gravityStrikeWeight + killListWeight + sniperChallengeWeight + timeToMineWeight + triviaWeight;
         int roll = (int) (Math.random() * total);
         int counter = 0;
 
