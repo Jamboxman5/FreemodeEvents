@@ -46,6 +46,13 @@ public class TriviaEvent extends FreemodeEvent {
 
     }
 
+    public void submitAnswer(Player p, String answer) {
+        if (answer.equalsIgnoreCase(question.correctAnswer)) {
+            winner = p;
+            finish();
+        }
+    }
+
     @Override
     public void run() {
 

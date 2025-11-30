@@ -4,6 +4,7 @@ import net.jahcraft.freemodeevents.events.challenges.GravityStrikeEvent;
 import net.jahcraft.freemodeevents.events.challenges.KillListEvent;
 import net.jahcraft.freemodeevents.events.challenges.RampageEvent;
 import net.jahcraft.freemodeevents.events.challenges.SniperChallengeEvent;
+import net.jahcraft.freemodeevents.events.chat.TriviaEvent;
 import net.jahcraft.freemodeevents.events.vip.ExecutiveSearchEvent;
 import net.jahcraft.freemodeevents.events.chat.UnscrambleEvent;
 import net.jahcraft.freemodeevents.main.Main;
@@ -60,6 +61,7 @@ public class EventsCommand implements CommandExecutor {
             if (args[1].equalsIgnoreCase("unscramble")) Main.plugin.runEvent(new UnscrambleEvent());
             if (args[1].equalsIgnoreCase("sniperchallenge")) Main.plugin.runEvent(new SniperChallengeEvent());
             if (args[1].equalsIgnoreCase("executivesearch") && sender instanceof Player p) Main.plugin.runEvent(new ExecutiveSearchEvent(p, p.getLocation()));
+            if (args[1].equalsIgnoreCase("trivia")) Main.plugin.runEvent(new TriviaEvent());
             sender.sendMessage("New event triggered.");
         }
         else if (args[0].equalsIgnoreCase("start")) {
@@ -95,6 +97,19 @@ public class EventsCommand implements CommandExecutor {
                 }
                 return true;
             }
+            return true;
+        }
+        else if (args[0].equalsIgnoreCase("trivia")) {
+            if (!(sender instanceof Player p)) return true;
+            if (!Main.plugin.isRunningEvent() || !(Main.plugin.getRunningEvent() instanceof TriviaEvent event)) {
+                sender.sendMessage(ChatColor.RED + "No trivia event running!");
+                return true;
+            }
+            if (args.length == 1) {
+                sender.sendMessage(ChatColor.RED + "Please specify an answer!");
+                return true;
+            }
+            event.submitAnswer(p, args[1]);
             return true;
         }
         else if (args[0].equalsIgnoreCase("cancel")) {
