@@ -92,7 +92,7 @@ public class TriviaEvent extends FreemodeEvent {
 
     private static TriviaQuestion getRandomQuestion() {
         List<TriviaQuestion> questions = new ArrayList<>();
-        List<Map<?,?>> configEntries = Main.config.getConfig().getMapList("questions");
+        List<Map<?,?>> configEntries = Main.config.getConfig().getMapList("trivia-questions");
 
         for (Map<?,?> entry : configEntries) {
             String question = (String) entry.get("question");
