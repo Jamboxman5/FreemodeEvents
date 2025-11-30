@@ -59,8 +59,7 @@ public class TriviaEvent extends FreemodeEvent {
         try {
             Bukkit.broadcastMessage("Trivia: " + question.question + " (Click to Answer)");
             for (String answer : question.answers()) {
-                TextComponent msg = new TextComponent(TextComponent.fromLegacy("> §x§F§F§D§7§0§0" + answer));
-                msg.setUnderlined(true);
+                TextComponent msg = new TextComponent(TextComponent.fromLegacy("➠ §x§F§F§D§7§0§0" + answer));
                 msg.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/events trivia " + answer));
                 msg.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new Text("§x§0§0§E§8§F§FClick to select this answer!")
                 ));
