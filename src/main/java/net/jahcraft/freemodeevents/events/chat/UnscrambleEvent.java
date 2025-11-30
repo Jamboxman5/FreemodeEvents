@@ -45,8 +45,9 @@ public class UnscrambleEvent extends FreemodeEvent {
     @EventHandler(priority = EventPriority.LOWEST)
     public void onChat(AsyncPlayerChatEvent event) {
         if (!Main.plugin.isRunningEvent(this)) return;
-        if (event.getMessage().equalsIgnoreCase(phrase)) event.setCancelled(true);
+        if (!event.getMessage().equalsIgnoreCase(phrase)) return;
 
+        event.setCancelled(true);
         winner = event.getPlayer();
 
         finish();
