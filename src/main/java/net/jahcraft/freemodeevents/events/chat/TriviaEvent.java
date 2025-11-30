@@ -2,6 +2,7 @@ package net.jahcraft.freemodeevents.events.chat;
 
 import net.jahcraft.freemodeevents.events.FreemodeEvent;
 import net.jahcraft.freemodeevents.main.Main;
+import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.HoverEvent;
 import net.md_5.bungee.api.chat.TextComponent;
@@ -11,6 +12,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
+import org.checkerframework.checker.units.qual.A;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -24,6 +26,8 @@ public class TriviaEvent extends FreemodeEvent {
 
     private Player winner = null;
 
+    private List<Player> ignoring;
+
     public TriviaEvent() {
         this(getRandomQuestion(), Main.config.getConfig().getInt("trivia-timer"));
     }
@@ -31,15 +35,20 @@ public class TriviaEvent extends FreemodeEvent {
     public TriviaEvent(TriviaQuestion question, int timeLimit) {
         this.question = question;
         this.timeLimit = timeLimit;
-
+        this.ignoring = new ArrayList<>();
         Main.plugin.getServer().getPluginManager().registerEvents(this, Main.plugin);
     }
 
     @EventHandler(priority = EventPriority.LOWEST)
     public void onChat(AsyncPlayerChatEvent event) {
         if (!Main.plugin.isRunningEvent(this)) return;
-        if (event.getMessage().equalsIgnoreCase(question.correctAnswer)) event.setCancelled(true);
+        if (!event.getMessage().equalsIgnoreCase(question.correctAnswer)) {
+            event.getPlayer().sendMessage(ChatColor.RED + "Incorrect answer!");
+            ignoring.add(event.getPlayer());
+            return;
+        }
 
+        event.setCancelled(true);
         winner = event.getPlayer();
 
         finish();
@@ -50,6 +59,9 @@ public class TriviaEvent extends FreemodeEvent {
         if (answer.equalsIgnoreCase(question.correctAnswer)) {
             winner = p;
             finish();
+        } else {
+            p.sendMessage(ChatColor.RED + "Incorrect answer!");
+            ignoring.add(p);
         }
     }
 
