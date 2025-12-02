@@ -6,10 +6,7 @@ import net.jahcraft.freemodeevents.util.EventUtil;
 import net.md_5.bungee.api.ChatColor;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
-import org.bukkit.entity.EntityType;
-import org.bukkit.entity.LivingEntity;
-import org.bukkit.entity.Mob;
-import org.bukkit.entity.Player;
+import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.scoreboard.*;
@@ -69,7 +66,14 @@ public class GravityStrikeEvent extends FreemodeEvent {
 
         if (!Main.plugin.isRunningEvent(this)) return;
         if (!(event.getEntity() instanceof LivingEntity)) return;
-        if (!(event.getDamager() instanceof Player player)) return;
+        Player player;
+        if (event.getDamager() instanceof Projectile proj) {
+            if (!(proj.getShooter() instanceof Player )) return;
+            player = (Player) proj.getShooter();
+        } else {
+            if (!(event.getDamager() instanceof Player)) return;
+            player = (Player) event.getDamager();
+        }
         if (!(event.getEntity() instanceof Mob)) return;
         if (player.getFallDistance() <= 1) return;
         if (event.isCancelled()) return;
