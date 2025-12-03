@@ -12,7 +12,7 @@ import org.bukkit.entity.EntityType;
 public class EventUtil {
 
     public static FreemodeEvent getGenericEvent() {
-        return new FreemodeEvent() {
+        return new FreemodeEvent("Generic") {
             @Override
             public void finish() {
                 Main.plugin.finishEvent(this);

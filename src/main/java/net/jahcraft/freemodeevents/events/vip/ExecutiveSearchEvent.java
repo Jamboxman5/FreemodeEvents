@@ -207,6 +207,9 @@ public class ExecutiveSearchEvent extends FreemodeEvent {
             Bukkit.broadcastMessage(executive.getName() + " survived the Executive Search! Congratulations!");
         }
 
+        Main.plugin.addWin(winner, this);
+
+
 
         Bukkit.getScheduler().runTaskAsynchronously(Main.plugin, () -> {
 

@@ -107,5 +107,8 @@ public class UnscrambleEvent extends FreemodeEvent {
         } else {
             Bukkit.broadcastMessage(winner.getDisplayName() + " has unscrambled the phrase! (" + phrase + ")");
         }
+
+        Main.plugin.addWin(winner, this);
+
     }
 }

@@ -1,12 +1,13 @@
 package net.jahcraft.freemodeevents.main;
 
 import net.jahcraft.freemodeevents.commands.EventsCommand;
-import net.jahcraft.freemodeevents.config.DataManager;
+import net.jahcraft.freemodeevents.config.ConfigManager;
+import net.jahcraft.freemodeevents.config.LeaderboardManager;
 import net.jahcraft.freemodeevents.events.EventController;
 import net.jahcraft.freemodeevents.events.FreemodeEvent;
 import net.jahcraft.freemodeevents.listeners.JoinListener;
 import org.bukkit.Bukkit;
-import org.bukkit.command.CommandExecutor;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.HandlerList;
 import org.bukkit.plugin.RegisteredServiceProvider;
@@ -15,11 +16,14 @@ import org.bukkit.plugin.java.JavaPlugin;
 import net.milkbowl.vault.economy.Economy;
 import org.bukkit.scoreboard.Scoreboard;
 
+import java.util.List;
+
 public class Main extends JavaPlugin {
 
 	public static Economy eco;
 	public static Main plugin;
-    public static DataManager config;
+    public static ConfigManager config;
+    public static LeaderboardManager leaderboardManager;
 
     private FreemodeEvent currentEvent;
     private Scoreboard currentScoreboard;
@@ -45,7 +49,8 @@ public class Main extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new JoinListener(), this);
 
         plugin = this;
-        config = new DataManager();
+        config = new ConfigManager();
+        leaderboardManager = new LeaderboardManager();
         loadConfiguration();
 
         getCommand("events").setExecutor(new EventsCommand());
@@ -71,6 +76,8 @@ public class Main extends JavaPlugin {
 		if (currentEvent != null) {
             finishEvent(currentEvent);
         }
+
+        leaderboardManager.saveConfig();
 
 	}
 	
@@ -136,4 +143,72 @@ public class Main extends JavaPlugin {
 
     public void setCurrentScoreboard(Scoreboard board) { this.currentScoreboard = board; }
     public Scoreboard getCurrentScoreboard() { return currentScoreboard; }
+
+    public void addWin(Player p, FreemodeEvent event) {
+
+        if (p == null) return;
+
+        FileConfiguration globalBoard = leaderboardManager.getGlobalBoard();
+        FileConfiguration monthlyBoard = leaderboardManager.getMonthlyBoard();
+
+        addEventWin(globalBoard, p, event);
+        addGlobalWin(globalBoard, p);
+
+        addEventWin(monthlyBoard, p, event);
+        addGlobalWin(monthlyBoard, p);
+    }
+
+    private void addGlobalWin(FileConfiguration board, Player winner) {
+        List<String> globalWins = board.getStringList("global-wins");
+
+        boolean entryExists = false;
+        for (int i = 0; i < globalWins.size(); i++) {
+            String s = globalWins.get(i);
+            if (s.contains(winner.getUniqueId().toString())) {
+                String[] parts = s.split("\\.");
+                String name = parts[0];
+                String uuid = parts[2];
+                int wins = Integer.parseInt(parts[1]);
+                if (!name.equals(winner.getName())) name = winner.getName();
+                wins++;
+                s = name + "." + wins + "." + uuid;
+                globalWins.set(i, s);
+                entryExists = true;
+                break;
+            }
+        }
+
+        if (!entryExists) {
+            globalWins.add(winner.getName() + "." + 1 + "." + winner.getUniqueId());
+        }
+
+        board.set("global-wins", globalWins);
+    }
+
+    private void addEventWin(FileConfiguration board, Player winner, FreemodeEvent event) {
+        List<String> eventWins = board.getStringList(event.getName().replace(" ", "-") + "-wins");
+
+        boolean entryExists = false;
+        for (int i = 0; i < eventWins.size(); i++) {
+            String s = eventWins.get(i);
+            if (s.contains(winner.getUniqueId().toString())) {
+                String[] parts = s.split("\\.");
+                String name = parts[0];
+                String uuid = parts[2];
+                int wins = Integer.parseInt(parts[1]);
+                if (!name.equals(winner.getName())) name = winner.getName();
+                wins++;
+                s = name + "." + wins + "." + uuid;
+                eventWins.set(i, s);
+                entryExists = true;
+                break;
+            }
+        }
+
+        if (!entryExists) {
+            eventWins.add(winner.getName() + "." + 1 + "." + winner.getUniqueId());
+        }
+
+        board.set(event.getName().replace(" ", "-") + "-wins", eventWins);
+    }
 }

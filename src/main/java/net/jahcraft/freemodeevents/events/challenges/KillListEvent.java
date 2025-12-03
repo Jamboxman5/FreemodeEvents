@@ -193,6 +193,7 @@ public class KillListEvent extends FreemodeEvent {
         } else {
             Bukkit.broadcastMessage(highest.getDisplayName() + " was the first to complete the kill list!");
         }
+        Main.plugin.addWin(highest, this);
 
 
         Bukkit.getScheduler().runTaskAsynchronously(Main.plugin, () -> {

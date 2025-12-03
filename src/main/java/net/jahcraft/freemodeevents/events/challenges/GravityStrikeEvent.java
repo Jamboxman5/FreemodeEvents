@@ -196,6 +196,8 @@ public class GravityStrikeEvent extends FreemodeEvent {
             Bukkit.broadcastMessage(highest.getDisplayName() + " was the first to land a hit from " + targetDistance + " blocks!");
         }
 
+        Main.plugin.addWin(highest, this);
+
 
         Bukkit.getScheduler().runTaskAsynchronously(Main.plugin, () -> {
 

@@ -10,12 +10,12 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.logging.Level;
 
-public class DataManager {
+public class ConfigManager {
 
     private FileConfiguration config = null;
     private File configFile = null;
 
-    public DataManager() {
+    public ConfigManager() {
 
         // saves/initializes the config
         saveDefaultConfig();

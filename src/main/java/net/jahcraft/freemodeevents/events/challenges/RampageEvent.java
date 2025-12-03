@@ -190,6 +190,7 @@ public class RampageEvent extends FreemodeEvent {
         } else {
             Bukkit.broadcastMessage(highest.getDisplayName() + " was the first to reach " + targetKills + " kills!");
         }
+        Main.plugin.addWin(highest, this);
 
 
         Bukkit.getScheduler().runTaskAsynchronously(Main.plugin, () -> {

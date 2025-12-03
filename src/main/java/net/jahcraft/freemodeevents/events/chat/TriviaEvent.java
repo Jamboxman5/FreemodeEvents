@@ -97,6 +97,9 @@ public class TriviaEvent extends FreemodeEvent {
         } else {
             Bukkit.broadcastMessage(winner.getDisplayName() + " got the correct answer! (" + question.correctAnswer + ")");
         }
+
+        Main.plugin.addWin(winner, this);
+
     }
 
     private static TriviaQuestion getRandomQuestion() {

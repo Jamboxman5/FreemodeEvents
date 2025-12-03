@@ -177,6 +177,7 @@ public class SniperChallengeEvent extends FreemodeEvent {
         } else {
             Bukkit.broadcastMessage(farthest.getDisplayName() + " was the first to land a snipe from " + targetDistance + " blocks!");
         }
+        Main.plugin.addWin(farthest, this);
 
 
         Bukkit.getScheduler().runTaskAsynchronously(Main.plugin, () -> {

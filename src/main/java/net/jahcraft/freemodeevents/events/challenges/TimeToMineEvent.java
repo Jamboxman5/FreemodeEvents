@@ -196,6 +196,7 @@ public class TimeToMineEvent extends FreemodeEvent {
         } else {
             Bukkit.broadcastMessage(highest.getDisplayName() + " was the first to mine " + targetCount + " " + EventUtil.getFormattedName(target) + "!");
         }
+        Main.plugin.addWin(highest, this);
 
 
         Bukkit.getScheduler().runTaskAsynchronously(Main.plugin, () -> {
