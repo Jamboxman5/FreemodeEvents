@@ -14,10 +14,7 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.checkerframework.checker.units.qual.A;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class TriviaEvent extends FreemodeEvent {
 
@@ -26,7 +23,7 @@ public class TriviaEvent extends FreemodeEvent {
 
     private Player winner = null;
 
-    private List<Player> ignoring;
+    private HashSet<Player> ignoring;
 
     public TriviaEvent() {
         this(getRandomQuestion(), Main.config.getConfig().getInt("trivia-timer"));
@@ -35,7 +32,7 @@ public class TriviaEvent extends FreemodeEvent {
     public TriviaEvent(TriviaQuestion question, int timeLimit) {
         this.question = question;
         this.timeLimit = timeLimit;
-        this.ignoring = new ArrayList<>();
+        this.ignoring = new HashSet<>();
         Main.plugin.getServer().getPluginManager().registerEvents(this, Main.plugin);
     }
 
@@ -56,7 +53,7 @@ public class TriviaEvent extends FreemodeEvent {
     }
 
     public void submitAnswer(Player p, String answer) {
-        if (answer.equalsIgnoreCase(question.correctAnswer)) {
+        if (answer.equalsIgnoreCase(question.correctAnswer) && !ignoring.contains(p)) {
             winner = p;
             finish();
         } else {
