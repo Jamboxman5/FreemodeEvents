@@ -29,6 +29,7 @@ public class KillListEvent extends FreemodeEvent {
 
     public KillListEvent(int timeLimit,
                          HashSet<EntityType> killList) {
+        super("Kill List");
         this.timeLimit = timeLimit;
         this.killList = killList;
         kills = new HashMap<>();

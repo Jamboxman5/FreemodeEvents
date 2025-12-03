@@ -30,6 +30,7 @@ public class TriviaEvent extends FreemodeEvent {
     }
 
     public TriviaEvent(TriviaQuestion question, int timeLimit) {
+        super("Trivia");
         this.question = question;
         this.timeLimit = timeLimit;
         this.ignoring = new HashSet<>();

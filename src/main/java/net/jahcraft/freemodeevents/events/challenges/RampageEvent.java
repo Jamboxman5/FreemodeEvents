@@ -32,6 +32,7 @@ public class RampageEvent extends FreemodeEvent {
     }
 
     public RampageEvent(int timeLimit, List<EntityType> acceptableMobs, int targetKills) {
+        super("Rampage");
         this.timeLimit = timeLimit;
         this.acceptableMobs = acceptableMobs;
         this.targetKills = targetKills;

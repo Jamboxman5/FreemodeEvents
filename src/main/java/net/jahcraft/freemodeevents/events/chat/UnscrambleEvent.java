@@ -21,6 +21,7 @@ public class UnscrambleEvent extends FreemodeEvent {
     private Player winner = null;
 
     public UnscrambleEvent() {
+        super("Unscramble");
         List<String> phrases = Main.config.getConfig().getStringList("unscramble-phrases");
         this.phrase = phrases.get((int) (Math.random() * phrases.size()));
         this.timeLimit = Main.config.getConfig().getInt("unscramble-timer");
@@ -35,6 +36,7 @@ public class UnscrambleEvent extends FreemodeEvent {
     }
 
     public UnscrambleEvent(String phrase, int timeLimit, boolean easyMode) {
+        super("Unscramble");
         this.phrase = phrase;
         this.timeLimit = timeLimit;
         this.easyMode = easyMode;

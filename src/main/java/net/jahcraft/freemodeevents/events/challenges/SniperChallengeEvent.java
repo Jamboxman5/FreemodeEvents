@@ -37,6 +37,7 @@ public class SniperChallengeEvent extends FreemodeEvent {
     }
 
     public SniperChallengeEvent(int timeLimit, int targetDistance) {
+        super("Sniper Challenge");
         this.timeLimit = timeLimit;
         this.targetDistance = targetDistance;
         distances = new HashMap<>();

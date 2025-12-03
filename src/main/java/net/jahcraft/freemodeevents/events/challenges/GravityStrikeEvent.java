@@ -39,6 +39,7 @@ public class GravityStrikeEvent extends FreemodeEvent {
     }
 
     public GravityStrikeEvent(int timeLimit, boolean requireMace, int targetDistance) {
+        super("Gravity Strike");
         this.timeLimit = timeLimit;
         this.requireMace = requireMace;
         this.targetDistance = targetDistance;

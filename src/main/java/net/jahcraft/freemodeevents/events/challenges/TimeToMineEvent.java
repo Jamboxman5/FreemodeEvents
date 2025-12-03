@@ -36,6 +36,7 @@ public class TimeToMineEvent extends FreemodeEvent {
     }
 
     public TimeToMineEvent(int timeLimit, Material target, int targetCount) {
+        super("Time to Mine");
         this.timeLimit = timeLimit;
         this.target = target;
         this.targetCount = targetCount;

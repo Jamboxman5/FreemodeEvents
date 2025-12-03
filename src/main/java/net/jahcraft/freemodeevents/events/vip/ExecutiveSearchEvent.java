@@ -34,6 +34,7 @@ public class ExecutiveSearchEvent extends FreemodeEvent {
     }
 
     public ExecutiveSearchEvent(Player target, Location center, int timeLimit, int beepFrequency, int radius) {
+        super("Executive Search");
         this.timeLimit = timeLimit;
         this.beepFrequency = beepFrequency;
         this.radius = radius;
