@@ -47,7 +47,7 @@ public class EventsCommand implements CommandExecutor {
                 return true;
             }
             if (args.length < 2) {
-                sender.sendMessage(ChatColor.RED + "Improper usage! Use \"/event trigger <event>\"");
+                sender.sendMessage(ChatColor.RED + "Improper usage! Use \"/event trigger <event/random>\"");
                 return true;
             }
             if (!Main.plugin.canRunEvent(true)) return true;
@@ -60,7 +60,8 @@ public class EventsCommand implements CommandExecutor {
             if (args[1].equalsIgnoreCase("executivesearch") && sender instanceof Player p) Main.plugin.runEvent(new ExecutiveSearchEvent(p, p.getLocation()));
             if (args[1].equalsIgnoreCase("trivia")) Main.plugin.runEvent(new TriviaEvent());
             if (args[1].equalsIgnoreCase("timetomine")) Main.plugin.runEvent(new TimeToMineEvent());
-            sender.sendMessage("New event triggered.");
+            if (args[1].equalsIgnoreCase("random")) Main.plugin.runEvent(EventUtil.getRandomEvent());
+            if (Main.plugin.isRunningEvent()) sender.sendMessage("New event triggered.");
         }
         else if (args[0].equalsIgnoreCase("start")) {
             if (!sender.hasPermission("freemodeevents.start")) {
