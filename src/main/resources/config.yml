@@ -282,3 +282,22 @@ trapper-challenge-target: -1
 
 # Require 3-star pelts for progression? (true/false)
 trapper-challenge-require-perfect: false
+
+
+
+### Bass Pros (Collect the most animal pelts)
+
+# Bass Pros selection weight.
+# Larger number -> Higher likelihood of selection when starting an event.
+# Set to 0 to disable this type of event.
+bass-pros-weight: 0
+
+# Bass Pros time limit in seconds.
+bass-pros-timer: 180
+
+# Fish required to complete the challenge.
+# Set to -1 to remove the limit and award the most blocks.
+bass-pros-target: -1
+
+# Require 3-star fish for progression? (true/false)
+bass-pros-require-perfect: false

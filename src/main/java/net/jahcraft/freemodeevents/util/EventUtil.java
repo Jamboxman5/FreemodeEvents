@@ -4,6 +4,7 @@ import net.jahcraft.freemodeevents.events.FreemodeEvent;
 import net.jahcraft.freemodeevents.events.challenges.*;
 import net.jahcraft.freemodeevents.events.chat.TriviaEvent;
 import net.jahcraft.freemodeevents.events.chat.UnscrambleEvent;
+import net.jahcraft.freemodeevents.events.integrations.BassProsEvent;
 import net.jahcraft.freemodeevents.events.integrations.TrapperChallengeEvent;
 import net.jahcraft.freemodeevents.main.Main;
 import org.bukkit.Bukkit;
@@ -65,8 +66,9 @@ public class EventUtil {
         int timeToMineWeight = Main.config.getConfig().getInt("time-to-mine-weight");
         int triviaWeight = Main.config.getConfig().getInt("trivia-weight");
         int trapperChallengeWeight = Main.config.getConfig().getInt("trapper-challenge-weight");
+        int bassProsWeight = Main.config.getConfig().getInt("bass-pros-weight");
 
-        int total = unscrambleWeight + rampageWeight + gravityStrikeWeight + killListWeight + sniperChallengeWeight + timeToMineWeight + triviaWeight + trapperChallengeWeight;
+        int total = unscrambleWeight + rampageWeight + gravityStrikeWeight + killListWeight + sniperChallengeWeight + timeToMineWeight + triviaWeight + trapperChallengeWeight + bassProsWeight;
 
 
         if (!hasWesternHunting()) {
@@ -75,6 +77,7 @@ public class EventUtil {
                 Bukkit.getLogger().warning("Download WesternHunting here: https://www.spigotmc.org/resources/westernhunting-wip.130522/");
                 Bukkit.getLogger().warning("Disabling integration events...");
                 total -= trapperChallengeWeight;
+                total -= bassProsWeight;
             }
         }
 
@@ -105,6 +108,11 @@ public class EventUtil {
         if (hasWesternHunting()) {
             counter += trapperChallengeWeight;
             if (roll < counter) return new TrapperChallengeEvent();
+        }
+
+        if (hasWesternHunting()) {
+            counter += bassProsWeight;
+            if (roll < counter) return new BassProsEvent();
         }
 
         return EventUtil.getGenericEvent();
