@@ -2,6 +2,7 @@ package net.jahcraft.freemodeevents.commands;
 
 import net.jahcraft.freemodeevents.events.challenges.*;
 import net.jahcraft.freemodeevents.events.chat.TriviaEvent;
+import net.jahcraft.freemodeevents.events.integrations.TrapperChallengeEvent;
 import net.jahcraft.freemodeevents.events.vip.ExecutiveSearchEvent;
 import net.jahcraft.freemodeevents.events.chat.UnscrambleEvent;
 import net.jahcraft.freemodeevents.main.Main;
@@ -60,8 +61,17 @@ public class EventsCommand implements CommandExecutor {
             if (args[1].equalsIgnoreCase("executivesearch") && sender instanceof Player p) Main.plugin.runEvent(new ExecutiveSearchEvent(p, p.getLocation()));
             if (args[1].equalsIgnoreCase("trivia")) Main.plugin.runEvent(new TriviaEvent());
             if (args[1].equalsIgnoreCase("timetomine")) Main.plugin.runEvent(new TimeToMineEvent());
+            if (args[1].equalsIgnoreCase("trapperchallenge")) {
+                if (EventUtil.hasWesternHunting()) {
+                    Main.plugin.runEvent(new TrapperChallengeEvent());
+                } else {
+                    sender.sendMessage(ChatColor.RED + "You need to have WesternHunting installed to do that!");
+                    return true;
+                }
+            }
             if (args[1].equalsIgnoreCase("random")) Main.plugin.runEvent(EventUtil.getRandomEvent());
             if (Main.plugin.isRunningEvent()) sender.sendMessage("New event triggered.");
+            return true;
         }
         else if (args[0].equalsIgnoreCase("start")) {
             if (!sender.hasPermission("freemodeevents.start")) {

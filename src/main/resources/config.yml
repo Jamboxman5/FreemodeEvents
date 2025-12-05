@@ -251,3 +251,34 @@ executive-search-afk-limit: 30
 
 # Radius of the search zone in blocks
 executive-search-radius: 100
+
+
+
+####################################################################################################################
+
+#
+# Integration Events Configuration
+#
+
+### WesternHunting Events
+
+##  These events are integrations with one of my other plugins, WesternHunting
+##  Find it here: https://www.spigotmc.org/resources/westernhunting-wip.130522/
+##  They will not work without it and are disabled by default!
+
+### Trapper Challenge (Collect the most animal pelts)
+
+# Trapper Challenge selection weight.
+# Larger number -> Higher likelihood of selection when starting an event.
+# Set to 0 to disable this type of event.
+trapper-challenge-weight: 0
+
+# Trapper Challenge time limit in seconds.
+trapper-challenge-timer: 180
+
+# Pelts required to complete the challenge.
+# Set to -1 to remove the limit and award the most blocks.
+trapper-challenge-target: -1
+
+# Require 3-star pelts for progression? (true/false)
+trapper-challenge-require-perfect: false
