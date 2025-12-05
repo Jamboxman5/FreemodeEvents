@@ -6,6 +6,7 @@ import net.jahcraft.freemodeevents.util.EventUtil;
 import net.md_5.bungee.api.ChatColor;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.Particle;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -130,6 +131,32 @@ public class ExecutiveSearchEvent extends FreemodeEvent {
 
             for (Player p : Bukkit.getOnlinePlayers()) {
                 p.setScoreboard(board);
+            }
+
+        });
+
+        Bukkit.getScheduler().runTaskAsynchronously(Main.plugin, () -> {
+            while (Main.plugin.isRunningEvent(this)) {
+
+                try {
+                    Thread.sleep(1000L);
+
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
+
+                for (Player p : Bukkit.getOnlinePlayers()) {
+                    if (!isWithinRadius(p)) continue;
+                    for (int i = 0; i < 360; i++) {
+                        double xComp = (int) (radius * Math.cos(Math.toRadians((i))));
+                        double yComp = (int) (radius * Math.sin(Math.toRadians((i))));
+                        double centerX = center.getBlockX();
+                        double centerZ = center.getBlockZ();
+                        double y = p.getLocation().getBlockY() + 1;
+                        p.spawnParticle(Particle.RAID_OMEN, new Location(executive.getWorld(), centerX + xComp, y, centerZ + yComp), 8);
+                        p.spawnParticle(Particle.RAID_OMEN, new Location(executive.getWorld(), centerX + xComp, y-1, centerZ + yComp), 8);
+                    }
+                }
             }
 
         });
