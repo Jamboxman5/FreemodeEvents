@@ -33,9 +33,9 @@ public class GravityStrikeEvent extends FreemodeEvent {
     private Objective obj;
 
     public GravityStrikeEvent() {
-        this(Main.config.getConfig().getInt("gravity-strike-timer"),
-                Main.config.getConfig().getBoolean("gravity-strike-require-mace"),
-                Main.config.getConfig().getInt("gravity-strike-target"));
+        this(Main.plugin.getConfig().getInt("gravity-strike-timer"),
+                Main.plugin.getConfig().getBoolean("gravity-strike-require-mace"),
+                Main.plugin.getConfig().getInt("gravity-strike-target"));
     }
 
     public GravityStrikeEvent(int timeLimit, boolean requireMace, int targetDistance) {

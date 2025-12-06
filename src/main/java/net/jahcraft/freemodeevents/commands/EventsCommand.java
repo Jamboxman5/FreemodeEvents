@@ -12,13 +12,10 @@ import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.chat.*;
 import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.chat.hover.content.Text;
-import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-
-import java.awt.*;
 
 public class EventsCommand implements CommandExecutor {
     @Override
@@ -106,10 +103,10 @@ public class EventsCommand implements CommandExecutor {
                 return true;
             }
             if (args[1].equalsIgnoreCase("executivesearch")) {
-                if (System.currentTimeMillis() - Main.lastExecutiveSearch > Main.config.getConfig().getInt("executive-search-cooldown") * 1000F) {
+                if (System.currentTimeMillis() - Main.lastExecutiveSearch > Main.plugin.getConfig().getInt("executive-search-cooldown") * 1000F) {
                     Main.plugin.runEvent(new ExecutiveSearchEvent(p, p.getLocation()));
                 } else {
-                    int cooldown = Main.config.getConfig().getInt("executive-search-cooldown");
+                    int cooldown = Main.plugin.getConfig().getInt("executive-search-cooldown");
                     int seconds = Math.toIntExact(cooldown - (int) ((System.currentTimeMillis() - Main.lastExecutiveSearch) / 1000f));
                     sender.sendMessage(ChatColor.RED + "You must wait " + EventUtil.secondsToMinutes(seconds) + " before starting another Executive Search!");
                 }
@@ -147,11 +144,10 @@ public class EventsCommand implements CommandExecutor {
                 sender.sendMessage(ChatColor.RED + "There's an event currently running!");
                 return true;
             }
-            sender.sendMessage("The next event will begin in ~" + EventUtil.secondsToMinutes(Main.plugin.getEventCooldown()));
+            sender.sendMessage("The next event will begin in ~" + EventUtil.secondsToMinutes(Main.plugin.getTimeToNextEvent()));
         }
         else if (args[0].equalsIgnoreCase("reload")) {
-            Main.config.reloadConfig();
-            Main.plugin.loadConfiguration();
+            Main.plugin.reloadConfig();
             sender.sendMessage("FreemodeEvents configuration reloaded!");
         }
 

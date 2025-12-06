@@ -1,7 +1,6 @@
 package net.jahcraft.freemodeevents.main;
 
 import net.jahcraft.freemodeevents.commands.EventsCommand;
-import net.jahcraft.freemodeevents.config.ConfigManager;
 import net.jahcraft.freemodeevents.config.LeaderboardManager;
 import net.jahcraft.freemodeevents.events.EventController;
 import net.jahcraft.freemodeevents.events.FreemodeEvent;
@@ -22,13 +21,11 @@ public class Main extends JavaPlugin {
 
 	public static Economy eco;
 	public static Main plugin;
-    public static ConfigManager config;
     public static LeaderboardManager leaderboardManager;
 
     private FreemodeEvent currentEvent;
     private Scoreboard currentScoreboard;
 
-    private int eventCooldown;
     private EventController controller;
 
     private long lastEventEnd = 0;
@@ -37,6 +34,8 @@ public class Main extends JavaPlugin {
 	
 	@Override
 	public void onEnable() {
+
+        saveDefaultConfig();
 		
 		if (!setupEconomy()) {
 			
@@ -49,9 +48,7 @@ public class Main extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new JoinListener(), this);
 
         plugin = this;
-        config = new ConfigManager();
         leaderboardManager = new LeaderboardManager();
-        loadConfiguration();
 
         getCommand("events").setExecutor(new EventsCommand());
 
@@ -97,7 +94,7 @@ public class Main extends JavaPlugin {
 //        Bukkit.getLogger().info("Cooldown? " + eventCooldown + "s");
 //        Bukkit.getLogger().info("Cooldown passed? " + ((System.currentTimeMillis() - lastEventEnd)/1000) + "s");
         if (ignoreCooldown) return (currentEvent == null && !Bukkit.getOnlinePlayers().isEmpty());
-        return (currentEvent == null && !Bukkit.getOnlinePlayers().isEmpty() && (System.currentTimeMillis() - lastEventEnd >= (eventCooldown * 1000)));
+        return (currentEvent == null && !Bukkit.getOnlinePlayers().isEmpty() && (System.currentTimeMillis() - lastEventEnd >= (getEventCooldown() * 1000)));
 
     }
 
@@ -122,6 +119,8 @@ public class Main extends JavaPlugin {
 
     }
 
+    public int getEventCooldown() { return getConfig().getInt("event-cooldown"); }
+
     public boolean isRunningEvent(FreemodeEvent event) {
         return (currentEvent==event);
     }
@@ -130,16 +129,12 @@ public class Main extends JavaPlugin {
         return (currentEvent!=null);
     }
 
-    public int getEventCooldown() {
+    public int getTimeToNextEvent() {
         if (isRunningEvent()) return -1;
-        return Math.toIntExact(eventCooldown - ((System.currentTimeMillis() - lastEventEnd) / 1000));
+        return Math.toIntExact(getEventCooldown() - ((System.currentTimeMillis() - lastEventEnd) / 1000));
     }
 
     public FreemodeEvent getRunningEvent() { return currentEvent; }
-
-    public void loadConfiguration() {
-        eventCooldown = config.getConfig().getInt("event-cooldown");
-    }
 
     public void setCurrentScoreboard(Scoreboard board) { this.currentScoreboard = board; }
     public Scoreboard getCurrentScoreboard() { return currentScoreboard; }

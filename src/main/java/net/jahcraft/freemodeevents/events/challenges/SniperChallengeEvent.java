@@ -32,8 +32,8 @@ public class SniperChallengeEvent extends FreemodeEvent {
     private Objective obj;
 
     public SniperChallengeEvent() {
-        this(Main.config.getConfig().getInt("sniper-challenge-timer"),
-                Main.config.getConfig().getInt("gravity-strike-target"));
+        this(Main.plugin.getConfig().getInt("sniper-challenge-timer"),
+                Main.plugin.getConfig().getInt("gravity-strike-target"));
     }
 
     public SniperChallengeEvent(int timeLimit, int targetDistance) {

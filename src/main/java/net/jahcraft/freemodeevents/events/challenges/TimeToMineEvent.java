@@ -32,7 +32,7 @@ public class TimeToMineEvent extends FreemodeEvent {
     private List<Location> placedLocs;
 
     public TimeToMineEvent() {
-        this(Main.config.getConfig().getInt("time-to-mine-timer"), getTargetBlock(), Main.config.getConfig().getInt("time-to-mine-target"));
+        this(Main.plugin.getConfig().getInt("time-to-mine-timer"), getTargetBlock(), Main.plugin.getConfig().getInt("time-to-mine-target"));
     }
 
     public TimeToMineEvent(int timeLimit, Material target, int targetCount) {
@@ -166,7 +166,7 @@ public class TimeToMineEvent extends FreemodeEvent {
     }
 
     private static Material getTargetBlock() {
-        List<String> configBlocks = Main.config.getConfig().getStringList("time-to-mine-blocks");
+        List<String> configBlocks = Main.plugin.getConfig().getStringList("time-to-mine-blocks");
         List<Material> blocks = new ArrayList<>();
         for (String s : configBlocks) {
             try {

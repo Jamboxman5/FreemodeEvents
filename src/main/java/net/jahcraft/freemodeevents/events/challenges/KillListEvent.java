@@ -23,8 +23,8 @@ public class KillListEvent extends FreemodeEvent {
     private Objective obj;
 
     public KillListEvent() {
-        this(Main.config.getConfig().getInt("kill-list-timer"),
-                generateKillList(getMobsFromConfig(), Main.config.getConfig().getInt("kill-list-size")));
+        this(Main.plugin.getConfig().getInt("kill-list-timer"),
+                generateKillList(getMobsFromConfig(), Main.plugin.getConfig().getInt("kill-list-size")));
     }
 
     public KillListEvent(int timeLimit,
@@ -153,7 +153,7 @@ public class KillListEvent extends FreemodeEvent {
     }
 
     private static List<EntityType> getMobsFromConfig() {
-        List<String> configMobs = Main.config.getConfig().getStringList("kill-list-mobs");
+        List<String> configMobs = Main.plugin.getConfig().getStringList("kill-list-mobs");
         List<EntityType> mobs = new ArrayList<>();
         for (String s : configMobs) {
             try {

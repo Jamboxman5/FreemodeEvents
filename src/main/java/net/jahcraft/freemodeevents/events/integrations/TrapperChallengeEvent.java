@@ -31,7 +31,7 @@ public class TrapperChallengeEvent extends FreemodeEvent {
     private Objective obj;
 
     public TrapperChallengeEvent() {
-        this(Main.config.getConfig().getInt("trapper-challenge-timer"), Main.config.getConfig().getInt("trapper-challenge-target"), Main.config.getConfig().getBoolean("trapper-challenge-require-perfect"));
+        this(Main.plugin.getConfig().getInt("trapper-challenge-timer"), Main.plugin.getConfig().getInt("trapper-challenge-target"), Main.plugin.getConfig().getBoolean("trapper-challenge-require-perfect"));
     }
 
     public TrapperChallengeEvent(int timeLimit, int targetPelts, boolean require3star) {

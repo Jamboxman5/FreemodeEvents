@@ -22,15 +22,15 @@ public class UnscrambleEvent extends FreemodeEvent {
 
     public UnscrambleEvent() {
         super("Unscramble");
-        List<String> phrases = Main.config.getConfig().getStringList("unscramble-phrases");
+        List<String> phrases = Main.plugin.getConfig().getStringList("unscramble-phrases");
         this.phrase = phrases.get((int) (Math.random() * phrases.size()));
-        this.timeLimit = Main.config.getConfig().getInt("unscramble-timer");
+        this.timeLimit = Main.plugin.getConfig().getInt("unscramble-timer");
 
-        int selectedDifficulty = Main.config.getConfig().getInt("unscramble-difficulty");
+        int selectedDifficulty = Main.plugin.getConfig().getInt("unscramble-difficulty");
         if (selectedDifficulty == 0) easyMode = true;
         else if (selectedDifficulty == 1) easyMode = false;
         else {
-            double hardChance = Main.config.getConfig().getDouble("unscramble-difficulty-chance");
+            double hardChance = Main.plugin.getConfig().getDouble("unscramble-difficulty-chance");
             easyMode = (Math.random() > hardChance);
         }
     }

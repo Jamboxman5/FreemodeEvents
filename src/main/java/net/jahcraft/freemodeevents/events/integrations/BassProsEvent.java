@@ -30,7 +30,7 @@ public class BassProsEvent extends FreemodeEvent {
     private Objective obj;
 
     public BassProsEvent() {
-        this(Main.config.getConfig().getInt("bass-pros-timer"), Main.config.getConfig().getInt("bass-pros-target"), Main.config.getConfig().getBoolean("bass-pros-require-perfect"));
+        this(Main.plugin.getConfig().getInt("bass-pros-timer"), Main.plugin.getConfig().getInt("bass-pros-target"), Main.plugin.getConfig().getBoolean("bass-pros-require-perfect"));
     }
 
     public BassProsEvent(int timeLimit, int targetFish, boolean require3star) {

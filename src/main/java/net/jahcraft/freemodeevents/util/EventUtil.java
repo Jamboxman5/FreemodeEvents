@@ -58,15 +58,15 @@ public class EventUtil {
     }
 
     public static FreemodeEvent getRandomEvent() {
-        int unscrambleWeight = Main.config.getConfig().getInt("unscramble-weight");
-        int rampageWeight = Main.config.getConfig().getInt("rampage-weight");
-        int gravityStrikeWeight = Main.config.getConfig().getInt("gravity-strike-weight");
-        int killListWeight = Main.config.getConfig().getInt("kill-list-weight");
-        int sniperChallengeWeight = Main.config.getConfig().getInt("sniper-challenge-weight");
-        int timeToMineWeight = Main.config.getConfig().getInt("time-to-mine-weight");
-        int triviaWeight = Main.config.getConfig().getInt("trivia-weight");
-        int trapperChallengeWeight = Main.config.getConfig().getInt("trapper-challenge-weight");
-        int bassProsWeight = Main.config.getConfig().getInt("bass-pros-weight");
+        int unscrambleWeight = Main.plugin.getConfig().getInt("unscramble-weight");
+        int rampageWeight = Main.plugin.getConfig().getInt("rampage-weight");
+        int gravityStrikeWeight = Main.plugin.getConfig().getInt("gravity-strike-weight");
+        int killListWeight = Main.plugin.getConfig().getInt("kill-list-weight");
+        int sniperChallengeWeight = Main.plugin.getConfig().getInt("sniper-challenge-weight");
+        int timeToMineWeight = Main.plugin.getConfig().getInt("time-to-mine-weight");
+        int triviaWeight = Main.plugin.getConfig().getInt("trivia-weight");
+        int trapperChallengeWeight = Main.plugin.getConfig().getInt("trapper-challenge-weight");
+        int bassProsWeight = Main.plugin.getConfig().getInt("bass-pros-weight");
 
         int total = unscrambleWeight + rampageWeight + gravityStrikeWeight + killListWeight + sniperChallengeWeight + timeToMineWeight + triviaWeight + trapperChallengeWeight + bassProsWeight;
 

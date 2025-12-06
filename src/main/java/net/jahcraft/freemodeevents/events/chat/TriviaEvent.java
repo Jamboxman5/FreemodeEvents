@@ -26,7 +26,7 @@ public class TriviaEvent extends FreemodeEvent {
     private HashSet<Player> ignoring;
 
     public TriviaEvent() {
-        this(getRandomQuestion(), Main.config.getConfig().getInt("trivia-timer"));
+        this(getRandomQuestion(), Main.plugin.getConfig().getInt("trivia-timer"));
     }
 
     public TriviaEvent(TriviaQuestion question, int timeLimit) {
@@ -104,7 +104,7 @@ public class TriviaEvent extends FreemodeEvent {
 
     private static TriviaQuestion getRandomQuestion() {
         List<TriviaQuestion> questions = new ArrayList<>();
-        List<Map<?,?>> configEntries = Main.config.getConfig().getMapList("trivia-questions");
+        List<Map<?,?>> configEntries = Main.plugin.getConfig().getMapList("trivia-questions");
 
         for (Map<?,?> entry : configEntries) {
             String question = (String) entry.get("question");

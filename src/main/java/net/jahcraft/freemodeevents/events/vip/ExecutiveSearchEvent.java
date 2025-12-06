@@ -31,7 +31,7 @@ public class ExecutiveSearchEvent extends FreemodeEvent {
     private long lastMove;
 
     public ExecutiveSearchEvent(Player target, Location center) {
-        this(target, center, Main.config.getConfig().getInt("executive-search-timer"), Main.config.getConfig().getInt("executive-search-beep-frequency"), Main.config.getConfig().getInt("executive-search-radius"));
+        this(target, center, Main.plugin.getConfig().getInt("executive-search-timer"), Main.plugin.getConfig().getInt("executive-search-beep-frequency"), Main.plugin.getConfig().getInt("executive-search-radius"));
     }
 
     public ExecutiveSearchEvent(Player target, Location center, int timeLimit, int beepFrequency, int radius) {
@@ -45,7 +45,7 @@ public class ExecutiveSearchEvent extends FreemodeEvent {
 
         Bukkit.getScheduler().runTask(Main.plugin, () -> {
             board = Bukkit.getScoreboardManager().getNewScoreboard();
-            obj = board.registerNewObjective("rampagescores", Criteria.DUMMY, ChatColor.of("#007AD0") + "" +
+            obj = board.registerNewObjective("executivesearchscores", Criteria.DUMMY, ChatColor.of("#007AD0") + "" +
                     ChatColor.STRIKETHROUGH + "     " +
                     ChatColor.GRAY + "[ " +
                     ChatColor.of("#FFD700") + ChatColor.BOLD + "Executive Search" +
@@ -175,7 +175,7 @@ public class ExecutiveSearchEvent extends FreemodeEvent {
                     throw new RuntimeException(e);
                 }
 
-                if ((System.currentTimeMillis() - lastMove) > (Main.config.getConfig().getInt("executive-search-afk-limit") * 1000L)) {
+                if ((System.currentTimeMillis() - lastMove) > (Main.plugin.getConfig().getInt("executive-search-afk-limit") * 1000L)) {
                     Bukkit.broadcastMessage(ChatColor.RED + "The executive was last spotted near " + lastLocation.getBlockX() + ", " + lastLocation.getBlockY() + ", " + lastLocation.getBlockZ() + "! ");
                     executive.sendMessage(ChatColor.RED + "You need to get moving! Don't stand still for too long or your location will be revealed! ");
                 }

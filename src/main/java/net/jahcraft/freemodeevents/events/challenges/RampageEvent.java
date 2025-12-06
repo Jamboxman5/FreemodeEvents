@@ -28,7 +28,7 @@ public class RampageEvent extends FreemodeEvent {
     private Objective obj;
 
     public RampageEvent() {
-        this(Main.config.getConfig().getInt("rampage-timer"), getMobsFromConfig(), Main.config.getConfig().getInt("rampage-target"));
+        this(Main.plugin.getConfig().getInt("rampage-timer"), getMobsFromConfig(), Main.plugin.getConfig().getInt("rampage-target"));
     }
 
     public RampageEvent(int timeLimit, List<EntityType> acceptableMobs, int targetKills) {
@@ -160,7 +160,7 @@ public class RampageEvent extends FreemodeEvent {
     }
 
     private static List<EntityType> getMobsFromConfig() {
-        List<String> configMobs = Main.config.getConfig().getStringList("rampage-mobs");
+        List<String> configMobs = Main.plugin.getConfig().getStringList("rampage-mobs");
         List<EntityType> mobs = new ArrayList<>();
         for (String s : configMobs) {
             try {
