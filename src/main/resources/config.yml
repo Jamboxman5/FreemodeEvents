@@ -227,6 +227,53 @@ time-to-mine-blocks:
   - DEEPSLATE_DIAMOND_ORE
   - DEEPSLATE_EMERALD_ORE
 
+
+
+### King of the Castle Event Configuration
+
+# King of the Castle time limit in seconds.
+castle-defend-timer: 180
+
+# Start timer upon first entry?
+# TRUE: Event time limit doesn't start counting until a player enters the defend zone.
+# FALSE: Event time limit starts as soon as the event is triggered.
+# If true, the time limit will count in the background and the event will end if nobody enters the zone in time.
+castle-defend-entry-start: true
+
+## Locations to be automatically selected from when triggering a King of the Castle event
+# Can be manually defined here or set via "/events create kingofthecastle <shape> <radius>", with the
+# center of the defense zone being the location at which the command is executed.
+castle-defend-locations:
+
+  ## Example locations (You're going to want to remove these / repace them with your own)
+  # EXAMPLE LOCATION 1
+  # Location Name (location1) (Can be whatever you want - no spaces)
+  location1:
+    # Defense zone shape. ("square" or "circle")
+    shape: square
+    # Radius of defense zone. (5 block radius means the zone will be 10 blocks wide at its widest point)
+    radius: 5
+    # Coordinate locations of the center of the defense zone for this location.
+    centerX: 100.0
+    centerY: 100.0
+    centerZ: 100.0
+    # World name in which the event takes place.
+    world: world
+
+  # EXAMPLE LOCATION 2
+  # Location Name (location1) (Can be whatever you want - no spaces)
+  location2:
+    # Defense zone shape. ("square" or "circle")
+    shape: square
+    # Radius of defense zone. (5 block radius means the zone will be 10 blocks wide at its widest point)
+    radius: 10
+    #Coordinate locations of the center of the defense zone for this location.
+    centerX: -200.0
+    centerY: 100.0
+    centerZ: -200.0
+    # World name in which the event takes place.
+    world: world
+
 ####################################################################################################################
 
 #
