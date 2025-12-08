@@ -11,6 +11,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.scoreboard.*;
 
 import java.util.HashMap;
+import java.util.Set;
 
 public class KingOfTheCastleEvent extends FreemodeEvent {
 
@@ -27,7 +28,7 @@ public class KingOfTheCastleEvent extends FreemodeEvent {
     private final HashMap<Player, Long> enteredTimes;
 
     public KingOfTheCastleEvent(KOTHLocation location, int timeLimit) {
-        super("Executive Search");
+        super("King of the Castle");
         this.timeLimit = timeLimit;
         this.location = location;
 
@@ -106,7 +107,10 @@ public class KingOfTheCastleEvent extends FreemodeEvent {
                 }
 
                 for (Player p : Bukkit.getOnlinePlayers()) {
-                    if (!isWithinRadius(p)) continue;
+                    if (!isWithinRadius(p)) {
+                        enteredTimes.remove(p);
+                        continue;
+                    }
                     for (int i = 0; i < 360; i++) {
                         double xComp = (int) (location.radius * Math.cos(Math.toRadians((i))));
                         double yComp = (int) (location.radius * Math.sin(Math.toRadians((i))));
@@ -116,7 +120,28 @@ public class KingOfTheCastleEvent extends FreemodeEvent {
                         p.spawnParticle(Particle.RAID_OMEN, new Location(location.center.getWorld(), centerX + xComp, y, centerZ + yComp), 8);
                         p.spawnParticle(Particle.RAID_OMEN, new Location(location.center.getWorld(), centerX + xComp, y-1, centerZ + yComp), 8);
                     }
+
+                    if (!enteredTimes.containsKey(p)) enteredTimes.put(p, System.currentTimeMillis());
+
                 }
+
+                Set<Player> inRadius = enteredTimes.keySet();
+                if (inRadius.isEmpty()) holding = null;
+                else {
+                    long earliest = Long.MAX_VALUE;
+                    for (Player p : inRadius) {
+                        if (enteredTimes.get(p) < earliest) {
+                            holding = p;
+                            earliest = enteredTimes.get(p);
+                        }
+                    }
+                }
+
+                if (holding != null) {
+                    if (!scores.containsKey(holding)) scores.put(holding, 1);
+                    else scores.put(holding, scores.get(holding) + 1);
+                }
+
             }
 
         });
