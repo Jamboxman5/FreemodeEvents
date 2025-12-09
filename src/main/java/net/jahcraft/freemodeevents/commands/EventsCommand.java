@@ -4,6 +4,8 @@ import net.jahcraft.freemodeevents.events.challenges.*;
 import net.jahcraft.freemodeevents.events.chat.TriviaEvent;
 import net.jahcraft.freemodeevents.events.integrations.BassProsEvent;
 import net.jahcraft.freemodeevents.events.integrations.TrapperChallengeEvent;
+import net.jahcraft.freemodeevents.events.kotc.KOTHLocation;
+import net.jahcraft.freemodeevents.events.kotc.KingOfTheCastleEvent;
 import net.jahcraft.freemodeevents.events.vip.ExecutiveSearchEvent;
 import net.jahcraft.freemodeevents.events.chat.UnscrambleEvent;
 import net.jahcraft.freemodeevents.main.Main;
@@ -59,6 +61,12 @@ public class EventsCommand implements CommandExecutor {
             if (args[1].equalsIgnoreCase("executivesearch") && sender instanceof Player p) Main.plugin.runEvent(new ExecutiveSearchEvent(p, p.getLocation()));
             if (args[1].equalsIgnoreCase("trivia")) Main.plugin.runEvent(new TriviaEvent());
             if (args[1].equalsIgnoreCase("timetomine")) Main.plugin.runEvent(new TimeToMineEvent());
+            if (args[1].equalsIgnoreCase("kingofthecastle")) {
+                if (!(sender instanceof Player p)) return true;
+                if (args.length < 3) Main.plugin.runEvent(new KingOfTheCastleEvent(new KOTHLocation(10, p.getLocation(), KOTHLocation.KothShape.SQUARE), Main.plugin.getConfig().getInt("castle-defend-timer")));
+                else if (args.length < 4) Main.plugin.runEvent(new KingOfTheCastleEvent(new KOTHLocation(Integer.parseInt(args[2]), p.getLocation(), KOTHLocation.KothShape.SQUARE), Main.plugin.getConfig().getInt("castle-defend-timer")));
+                return true;
+            }
             if (args[1].equalsIgnoreCase("trapperchallenge")) {
                 if (EventUtil.hasWesternHunting()) {
                     Main.plugin.runEvent(new TrapperChallengeEvent());

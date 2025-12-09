@@ -11,6 +11,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.scoreboard.*;
 
 import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 public class KingOfTheCastleEvent extends FreemodeEvent {
@@ -63,12 +65,12 @@ public class KingOfTheCastleEvent extends FreemodeEvent {
             team3.setPrefix(ChatColor.of("#007AD0") + "" +  ChatColor.STRIKETHROUGH + "                                           ");
             team2.setPrefix(ChatColor.of("#FFD700") + "" + location.center.getBlockX() + ChatColor.of("#49B3FF") + ", " + ChatColor.of("#FFD700") + location.center.getBlockY() + ChatColor.of("#49B3FF") + ", " + ChatColor.of("#FFD700") + location.center.getBlockZ());
 
-            obj.getScore(team1Entry).setScore(3);
-            obj.getScore(team2Entry).setScore(2);
-            obj.getScore(team3Entry).setScore(0);
+            obj.getScore(team1Entry).setScore(7);
+            obj.getScore(team2Entry).setScore(6);
+            obj.getScore(team3Entry).setScore(4);
 
-            obj.getScore(ChatColor.YELLOW + "").setScore(4);
-            obj.getScore(ChatColor.RED + "").setScore(1);
+            obj.getScore(ChatColor.YELLOW + "").setScore(8);
+            obj.getScore(ChatColor.RED + "").setScore(5);
 
             for (Player p : Bukkit.getOnlinePlayers()) {
                 p.setScoreboard(board);
@@ -141,6 +143,57 @@ public class KingOfTheCastleEvent extends FreemodeEvent {
                     if (!scores.containsKey(holding)) scores.put(holding, 1);
                     else scores.put(holding, scores.get(holding) + 1);
                 }
+
+                List<Map.Entry<Player, Integer>> platform = scores.entrySet()
+                        .stream()
+                        .sorted((a, b) -> Integer.compare(b.getValue(), a.getValue()))
+                        .limit(3)
+                        .toList();
+
+                for (String entry : board.getEntries()) board.resetScores(entry);
+
+
+                for (int i = platform.size(); i > 0; i--) {
+//            Bukkit.broadcastMessage(i + " | " + platform.size());
+                    Map.Entry<Player, Integer> position = platform.get(i-1);
+                    Player p = position.getKey();
+                    Integer kills = position.getValue();
+
+                    String entry = "";
+                    switch(i) {
+                        case 3:
+                            entry += ChatColor.GREEN;
+                            break;
+                        case 2:
+                            entry += ChatColor.DARK_GREEN;
+                            break;
+                        case 1:
+                            entry += ChatColor.DARK_BLUE;
+                            break;
+                        default:
+                            entry += ChatColor.BLACK;
+                            break;
+                    }
+
+                    Team team = board.getTeam("rank" + i);
+                    if (team == null) team = board.registerNewTeam("rank" + i);
+
+                    team.addEntry(entry);
+                    team.setPrefix(ChatColor.of("#49B3FF") + p.getName() + ": ");
+                    if (kills == 1) team.setSuffix(ChatColor.of("#FFD700") + "" + kills + " second");
+                    else team.setSuffix(ChatColor.of("#FFD700") + "" + kills + " seconds");
+
+                    obj.getScore(entry).setScore(i);
+
+                }
+
+                Bukkit.getScheduler().runTask(Main.plugin, () -> {
+                    for (Player p : Bukkit.getOnlinePlayers()) {
+
+                        p.setScoreboard(board);
+
+                    }
+                });
 
             }
 
