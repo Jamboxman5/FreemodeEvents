@@ -84,7 +84,7 @@ public class KingOfTheCastleEvent extends FreemodeEvent {
     @Override
     public void run() {
 
-        Bukkit.broadcastMessage("King of the Hill! The player to hold the zone at " +
+        Bukkit.broadcastMessage("King of the Castle! The player to hold the zone at " +
                 ChatColor.of("#FFD700") + location.center.getBlockX() + ChatColor.of("#49B3FF") + ", " + ChatColor.of("#FFD700") + location.center.getBlockY() + ChatColor.of("#49B3FF") + ", " + ChatColor.of("#FFD700") + location.center.getBlockZ() +
                 ChatColor.WHITE + " for the longest time wins!");
 
@@ -109,18 +109,22 @@ public class KingOfTheCastleEvent extends FreemodeEvent {
                 }
 
                 for (Player p : Bukkit.getOnlinePlayers()) {
+
+                    if (isWithinRenderRadius(p)) {
+                        for (int i = 0; i < 36; i++) {
+                            double xComp = (int) (location.radius * Math.cos(Math.toRadians((i*10))));
+                            double yComp = (int) (location.radius * Math.sin(Math.toRadians((i*10))));
+                            double centerX = location.center.getBlockX();
+                            double centerZ = location.center.getBlockZ();
+                            double y = p.getLocation().getBlockY() + 1;
+                            p.spawnParticle(Particle.RAID_OMEN, new Location(location.center.getWorld(), centerX + xComp, y, centerZ + yComp), 8);
+                            p.spawnParticle(Particle.RAID_OMEN, new Location(location.center.getWorld(), centerX + xComp, y-1, centerZ + yComp), 8);
+                        }
+                    }
+
                     if (!isWithinRadius(p)) {
                         enteredTimes.remove(p);
                         continue;
-                    }
-                    for (int i = 0; i < 360; i++) {
-                        double xComp = (int) (location.radius * Math.cos(Math.toRadians((i))));
-                        double yComp = (int) (location.radius * Math.sin(Math.toRadians((i))));
-                        double centerX = location.center.getBlockX();
-                        double centerZ = location.center.getBlockZ();
-                        double y = p.getLocation().getBlockY() + 1;
-                        p.spawnParticle(Particle.RAID_OMEN, new Location(location.center.getWorld(), centerX + xComp, y, centerZ + yComp), 8);
-                        p.spawnParticle(Particle.RAID_OMEN, new Location(location.center.getWorld(), centerX + xComp, y-1, centerZ + yComp), 8);
                     }
 
                     if (!enteredTimes.containsKey(p)) enteredTimes.put(p, System.currentTimeMillis());
@@ -222,14 +226,33 @@ public class KingOfTheCastleEvent extends FreemodeEvent {
         return distance < location.radius;
     }
 
+    private boolean isWithinRenderRadius(Player p) {
+        int x1 = location.center.getBlockX();
+        int z1 = location.center.getBlockZ();
+        int x2 = p.getLocation().getBlockX();
+        int z2 = p.getLocation().getBlockZ();
+
+        int distance = (int) Math.sqrt(Math.pow(x2-x1, 2) + Math.pow(z2 - z1, 2));
+        return distance < (location.radius + 10);
+    }
+
     @Override
     public void finish() {
 
         Main.lastExecutiveSearch = System.currentTimeMillis();
         Main.plugin.finishEvent(this);
 
+        int highest = 0;
+        for (Player p : scores.keySet()) {
+            int score = scores.get(p);
+            if (score > highest) {
+                highest = score;
+                winner = p;
+            }
+        }
+
         if (winner != null) {
-            Bukkit.broadcastMessage(winner.getName() + " has successfully hunted the executive!");
+            Bukkit.broadcastMessage(winner.getName() + " held the zone for the longest time at " + scores.get(winner) + " seconds!");
         }
         else {
             Bukkit.broadcastMessage("Nobody held the zone! Poor show!");
