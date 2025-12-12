@@ -8,6 +8,7 @@ import org.bukkit.Location;
 import org.bukkit.Particle;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
+import org.bukkit.scheduler.BukkitTask;
 import org.bukkit.scoreboard.*;
 
 import java.util.HashMap;
@@ -111,16 +112,19 @@ public class KingOfTheCastleEvent extends FreemodeEvent {
                 for (Player p : Bukkit.getOnlinePlayers()) {
 
                     if (isWithinRenderRadius(p)) {
-                        for (int i = 0; i < 36; i++) {
-                            double xComp = (int) (location.radius * Math.cos(Math.toRadians((i*10))));
-                            double yComp = (int) (location.radius * Math.sin(Math.toRadians((i*10))));
+                        for (int i = 0; i < 30; i++) {
+                            double xComp = (int) (location.radius * Math.cos(Math.toRadians((i*12))));
+                            double yComp = (int) (location.radius * Math.sin(Math.toRadians((i*12))));
                             double centerX = location.center.getBlockX();
                             double centerZ = location.center.getBlockZ();
-                            double y = p.getLocation().getBlockY() + 1;
-                            p.spawnParticle(Particle.RAID_OMEN, new Location(location.center.getWorld(), centerX + xComp, y, centerZ + yComp), 8);
-                            p.spawnParticle(Particle.RAID_OMEN, new Location(location.center.getWorld(), centerX + xComp, y-1, centerZ + yComp), 8);
+                            double y = location.center.getBlockY();
+                            p.spawnParticle(Particle.RAID_OMEN, new Location(location.center.getWorld(), centerX + xComp, y, centerZ + yComp), 5);
+                            p.spawnParticle(Particle.RAID_OMEN, new Location(location.center.getWorld(), centerX + xComp, y+2, centerZ + yComp), 5);
+                            p.spawnParticle(Particle.RAID_OMEN, new Location(location.center.getWorld(), centerX + xComp, y+4, centerZ + yComp), 5);
                         }
                     }
+
+                    BukkitTask task;
 
                     if (!isWithinRadius(p)) {
                         enteredTimes.remove(p);
@@ -154,7 +158,7 @@ public class KingOfTheCastleEvent extends FreemodeEvent {
                         .limit(3)
                         .toList();
 
-                for (String entry : board.getEntries()) board.resetScores(entry);
+                for (String entry : board.getEntries()) if (entry.contains(ChatColor.GREEN + "") || entry.contains(ChatColor.DARK_BLUE + "") || entry.contains(ChatColor.DARK_GREEN + "")) board.resetScores(entry);
 
 
                 for (int i = platform.size(); i > 0; i--) {
