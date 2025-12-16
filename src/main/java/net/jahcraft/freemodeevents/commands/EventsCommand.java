@@ -22,7 +22,10 @@ import org.bukkit.entity.Player;
 public class EventsCommand implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        if (!label.equalsIgnoreCase("events")) return false;
+        if (!label.equalsIgnoreCase("events") &&
+            !label.equalsIgnoreCase("freemodeevents") &&
+            !label.equalsIgnoreCase("freemodeevents:events") &&
+            !label.equalsIgnoreCase("freemodeevents:freemodeevents")) return false;
 
         if (args.length == 0) {
             sender.sendMessage(ChatColor.RED + "Available subcommands: ");
